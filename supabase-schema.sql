@@ -45,3 +45,18 @@ create policy "public upload photos" on storage.objects for insert with check (b
 
 create policy "public read audio" on storage.objects for select using (bucket_id = 'audio');
 create policy "public upload audio" on storage.objects for insert with check (bucket_id = 'audio');
+
+-- ============================================================
+-- MIGRATION: multiple photos per wisher + video wishes
+-- Run this once in the SQL Editor, after the schema above has
+-- already been applied. Safe to run even with existing rows —
+-- there's no real data yet, so photo_url is simply replaced.
+-- ============================================================
+alter table cast_entries drop column if exists photo_url;
+alter table cast_entries add column if not exists photo_urls text[];
+alter table cast_entries add column if not exists clip_url text;
+
+-- Then: Storage tab → New bucket → name it exactly `videos` →
+-- toggle Public bucket ON → Create. Then run:
+create policy "public read videos" on storage.objects for select using (bucket_id = 'videos');
+create policy "public upload videos" on storage.objects for insert with check (bucket_id = 'videos');

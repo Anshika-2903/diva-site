@@ -34,7 +34,7 @@ body::before{
 }
 canvas#petals{position:fixed;inset:0;pointer-events:none;z-index:3}
 #photowall{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-#photowall img{position:absolute;object-fit:cover;border-radius:14px;opacity:.14;filter:grayscale(.25) saturate(1.1);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#photowall img,#photowall video{position:absolute;object-fit:cover;border-radius:14px;opacity:.14;filter:grayscale(.25) saturate(1.1);box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .wrap{max-width:940px;margin:0 auto;padding:0 20px}
 
 /* ---------- shared bits ---------- */
@@ -146,11 +146,22 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .card .stars{color:var(--gold);letter-spacing:2px;font-size:.85rem}
 .card p{font-size:.9rem;margin-top:8px}
 .card .quip{font-style:italic;opacity:.75;font-size:.85rem;margin-top:8px;border-left:2px solid var(--magenta);padding-left:10px}
-.card img.snap{width:100%;border-radius:8px;margin-top:12px;display:block}
-.card audio,.card iframe{width:100%;margin-top:12px;border-radius:8px;border:0}
+.card .snapgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-top:12px}
+.card img.snap{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}
+.card audio,.card iframe,.card video{width:100%;margin-top:12px;border-radius:8px;border:0}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .chip{font-family:var(--cond);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:3px 9px;border-radius:99px}
 .empty{border:1px dashed rgba(232,200,122,.3);border-radius:12px;padding:26px;text-align:center;font-size:.9rem;opacity:.7;margin-top:24px}
+
+/* trait walls */
+.wallset{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:30px}
+.wallgroup{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px}
+.cloud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px;min-height:50px}
+.cloudchip{font-family:var(--cond);letter-spacing:.05em;color:var(--gold);border:1px solid rgba(232,200,122,.35);padding:6px 14px;border-radius:99px;background:rgba(232,200,122,.06);display:inline-block}
+
+/* multi-photo preview grid */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-top:10px}
+.preview-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
 
 /* censor certificate */
 .censor{background:var(--cream);color:var(--ink);border-radius:6px;padding:26px;margin-top:28px;border:6px double var(--maroon)}
@@ -339,13 +350,18 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
         <div><label for="w-song">A song</label><input id="w-song" placeholder="the one that plays when she enters"></div>
       </div>
 
-      <label for="w-photo">A photo of you with Namrata</label>
-      <input type="file" id="w-photo" accept="image/*">
-      <img id="w-preview" style="display:none;width:100%;max-width:220px;border-radius:8px;margin-top:10px">
-      <p style="font-size:.75rem;opacity:.5;margin-top:6px">This one also drifts softly into the background for everyone.</p>
+      <label for="w-photo">Photos of you with Namrata <span style="opacity:.5;text-transform:none;letter-spacing:0">(add as many as you like)</span></label>
+      <input type="file" id="w-photo" accept="image/*" multiple>
+      <div id="w-preview-grid" class="preview-grid" style="display:none"></div>
+      <p style="font-size:.75rem;opacity:.5;margin-top:6px">These drift softly into the background for everyone, and stay on your card.</p>
 
       <label for="w-video">Your video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(YouTube / Drive / Instagram link)</span></label>
       <input id="w-video" placeholder="https://…">
+
+      <label for="w-clip">Or upload a short video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(~10 seconds, say something!)</span></label>
+      <input type="file" id="w-clip" accept="video/*">
+      <video id="w-clip-preview" muted controls style="display:none;width:100%;max-width:280px;border-radius:8px;margin-top:10px"></video>
+      <p style="font-size:.75rem;opacity:.5;margin-top:6px">Plays silently in everyone's background — but with sound on your card.</p>
 
       <label>Voice note <span style="opacity:.5;text-transform:none;letter-spacing:0">(up to 30 seconds)</span></label>
       <div class="recwrap">
@@ -359,6 +375,20 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     </div>
 
     <div id="cast"></div>
+    <button class="btn" data-unlock="chwalls" style="margin-top:28px">Roll the bonus reel</button>
+  </div></section>
+
+  <!-- REEL 4½: TRAIT WALLS -->
+  <section class="chapter" id="chwalls"><div class="wrap">
+    <div class="eyebrow">Reel four and a half</div>
+    <h2 class="reel">If she were <em>everything</em></h2>
+    <p class="sub">Every answer, stacked into one collage. No one's is more right than anyone else's.</p>
+    <div class="wallset">
+      <div class="wallgroup"><div class="eyebrow">🌸 The flower wall</div><div class="cloud" id="wall-flower"></div></div>
+      <div class="wallgroup"><div class="eyebrow">☁ The weather wall</div><div class="cloud" id="wall-weather"></div></div>
+      <div class="wallgroup"><div class="eyebrow">◉ The colour wall</div><div class="cloud" id="wall-color"></div></div>
+      <div class="wallgroup"><div class="eyebrow">♪ The song wall</div><div class="cloud" id="wall-song"></div></div>
+    </div>
     <button class="btn" data-unlock="ch5" style="margin-top:28px">Roll reel five</button>
   </div></section>
 
@@ -579,12 +609,27 @@ function compress(file,max=900){
     r.readAsDataURL(file);
   });
 }
-let photoBlob=null;
+let photoBlobs=[];
 $('#w-photo').onchange=async e=>{
+  const files=[...e.target.files]; if(!files.length) return;
+  photoBlobs=[];
+  const grid=$('#w-preview-grid'); grid.innerHTML=''; grid.style.display='grid';
+  for(const f of files){
+    const {blob,dataUrl}=await compress(f);
+    photoBlobs.push(blob);
+    const img=document.createElement('img'); img.src=dataUrl;
+    grid.appendChild(img);
+  }
+};
+
+/* ---------- video clip upload ---------- */
+let clipBlob=null;
+$('#w-clip').onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
-  const {blob,dataUrl}=await compress(f);
-  photoBlob=blob;
-  $('#w-preview').src=dataUrl; $('#w-preview').style.display='block';
+  clipBlob=f;
+  const preview=$('#w-clip-preview');
+  preview.src=URL.createObjectURL(f); preview.style.display='block';
+  preview.onloadedmetadata=()=>{ if(preview.duration>25) toast('That\'s a bit long — try to keep it under ~15 seconds'); };
 };
 
 /* ---------- voice recording ---------- */
@@ -626,19 +671,26 @@ $('#submitwish').onclick=async()=>{
   $('#submitwish').disabled=true; $('#submitwish').textContent='Saving…';
   try{
     const id='w'+Date.now()+Math.floor(Math.random()*999);
-    let photo_url=null, audio_url=null;
+    let photo_urls=[], audio_url=null, clip_url=null;
 
-    if(photoBlob){
-      const path=`${id}.jpg`;
-      const {error} = await sb.storage.from('photos').upload(path, photoBlob, {contentType:'image/jpeg'});
+    for(let i=0;i<photoBlobs.length;i++){
+      const path=`${id}_${i}.jpg`;
+      const {error} = await sb.storage.from('photos').upload(path, photoBlobs[i], {contentType:'image/jpeg'});
       if(error) throw error;
-      photo_url = sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+      photo_urls.push(sb.storage.from('photos').getPublicUrl(path).data.publicUrl);
     }
     if(audioBlob){
       const path=`${id}.webm`;
       const {error} = await sb.storage.from('audio').upload(path, audioBlob, {contentType:'audio/webm'});
       if(error) throw error;
       audio_url = sb.storage.from('audio').getPublicUrl(path).data.publicUrl;
+    }
+    if(clipBlob){
+      const ext=(clipBlob.name.split('.').pop()||'mp4').toLowerCase();
+      const path=`${id}.${ext}`;
+      const {error} = await sb.storage.from('videos').upload(path, clipBlob, {contentType:clipBlob.type||'video/mp4'});
+      if(error) throw error;
+      clip_url = sb.storage.from('videos').getPublicUrl(path).data.publicUrl;
     }
 
     const entry={
@@ -647,7 +699,7 @@ $('#submitwish').onclick=async()=>{
       roast:$('#w-roast').value.trim(),
       flower:$('#w-flower').value.trim(), weather:$('#w-weather').value.trim(),
       color:$('#w-color').value.trim(), song:$('#w-song').value.trim(),
-      video:$('#w-video').value.trim(), photo_url, audio_url
+      video:$('#w-video').value.trim(), photo_urls, audio_url, clip_url
     };
     const {error:insErr} = await sb.from('cast_entries').insert(entry);
     if(insErr) throw insErr;
@@ -662,18 +714,41 @@ $('#submitwish').onclick=async()=>{
   }
 };
 
-/* ---------- ambient photo wall (drifts in the background) ---------- */
-function renderPhotoWall(urls){
+/* ---------- ambient photo + video wall (drifts in the background) ---------- */
+function placeInWall(el,w){
+  el.style.width=w+'px'; el.style.height=(w*1.2)+'px';
+  el.style.left=(Math.random()*90)+'%'; el.style.top=(Math.random()*90)+'%';
+  el.style.transform=`rotate(${(Math.random()*24-12).toFixed(1)}deg)`;
+}
+function renderPhotoWall(photoUrls,clipUrls){
   const wall=$('#photowall');
   wall.innerHTML='';
-  urls.filter(Boolean).slice(0,14).forEach(u=>{
+  photoUrls.filter(Boolean).slice(0,14).forEach(u=>{
     const img=document.createElement('img');
     img.src=u; img.loading='lazy'; img.alt='';
-    const w=140+Math.random()*90;
-    img.style.width=w+'px'; img.style.height=(w*1.2)+'px';
-    img.style.left=(Math.random()*90)+'%'; img.style.top=(Math.random()*90)+'%';
-    img.style.transform=`rotate(${(Math.random()*24-12).toFixed(1)}deg)`;
+    placeInWall(img,140+Math.random()*90);
     wall.appendChild(img);
+  });
+  (clipUrls||[]).filter(Boolean).slice(0,6).forEach(u=>{
+    const v=document.createElement('video');
+    v.src=u; v.autoplay=true; v.loop=true; v.muted=true; v.playsInline=true;
+    placeInWall(v,150+Math.random()*80);
+    wall.appendChild(v);
+  });
+}
+
+/* ---------- trait walls (flower / weather / colour / song collages) ---------- */
+function renderTraitWalls(entries){
+  const groups={flower:'🌸',weather:'☁',color:'◉',song:'♪'};
+  Object.keys(groups).forEach(key=>{
+    const host=$('#wall-'+key); if(!host) return;
+    const vals=entries.map(e=>e[key]).filter(Boolean);
+    if(!vals.length){ host.innerHTML='<span style="opacity:.5;font-size:.85rem">Nothing yet.</span>'; return; }
+    host.innerHTML=vals.map(v=>{
+      const size=(0.85+Math.random()*0.9).toFixed(2);
+      const rot=(Math.random()*16-8).toFixed(1);
+      return `<span class="cloudchip" style="font-size:${size}rem;transform:rotate(${rot}deg)">${groups[key]} ${esc(v)}</span>`;
+    }).join('');
   });
 }
 
@@ -684,17 +759,20 @@ async function loadCast(){
   if(error){ box.innerHTML='<div class="empty">Cast list is taking a moment. Refresh to try again.</div>'; return; }
   if(!entries || !entries.length){
     box.innerHTML='<div class="empty">No cast yet. Whoever opens this first, goes first.</div>';
+    renderTraitWalls([]);
     return;
   }
-  renderPhotoWall(entries.map(e=>e.photo_url));
+  renderPhotoWall(entries.flatMap(e=>e.photo_urls||[]), entries.map(e=>e.clip_url));
+  renderTraitWalls(entries);
   box.innerHTML='<div class="cards">'+entries.map(e=>`
     <div class="card">
       <div class="who">${esc(e.name)}${e.role?' · '+esc(e.role):''}</div>
       <div class="stars">${'★'.repeat(e.stars)}${'☆'.repeat(5-e.stars)}</div>
       ${e.review?`<p>${esc(e.review)}</p>`:''}
       ${e.roast?`<div class="quip">${esc(e.roast)}</div>`:''}
-      ${e.photo_url?`<img class="snap" src="${e.photo_url}" alt="Photo shared by ${esc(e.name)}">`:''}
+      ${e.photo_urls&&e.photo_urls.length?`<div class="snapgrid">${e.photo_urls.map(u=>`<img class="snap" src="${u}" alt="Photo shared by ${esc(e.name)}">`).join('')}</div>`:''}
       ${e.audio_url?`<audio controls src="${e.audio_url}"></audio>`:''}
+      ${e.clip_url?`<video controls src="${e.clip_url}"></video>`:''}
       ${embedVideo(e.video)}
       <div class="chips">
         ${e.flower?`<span class="chip">🌸 ${esc(e.flower)}</span>`:''}

@@ -33,6 +33,8 @@ body::before{
   background-size:4px 4px;mix-blend-mode:overlay;
 }
 canvas#petals{position:fixed;inset:0;pointer-events:none;z-index:3}
+#photowall{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+#photowall img{position:absolute;object-fit:cover;border-radius:14px;opacity:.14;filter:grayscale(.25) saturate(1.1);box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .wrap{max-width:940px;margin:0 auto;padding:0 20px}
 
 /* ---------- shared bits ---------- */
@@ -197,6 +199,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
 </style>
 </head>
 <body>
+<div id="photowall" aria-hidden="true"></div>
 <canvas id="petals"></canvas>
 
 <!-- ============ GATE ============ -->
@@ -336,9 +339,10 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
         <div><label for="w-song">A song</label><input id="w-song" placeholder="the one that plays when she enters"></div>
       </div>
 
-      <label for="w-photo">Your favourite photo of her</label>
+      <label for="w-photo">A photo of you with Namrata</label>
       <input type="file" id="w-photo" accept="image/*">
       <img id="w-preview" style="display:none;width:100%;max-width:220px;border-radius:8px;margin-top:10px">
+      <p style="font-size:.75rem;opacity:.5;margin-top:6px">This one also drifts softly into the background for everyone.</p>
 
       <label for="w-video">Your video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(YouTube / Drive / Instagram link)</span></label>
       <input id="w-video" placeholder="https://…">
@@ -408,7 +412,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <div id="quiz1"></div>
 
       <div class="eyebrow" style="margin-top:44px">Game two</div>
-      <h2 class="reel" style="font-size:clamp(1.5rem,5vw,2.2rem">How well do you <em>know</em> her?</h2>
+      <h2 class="reel" style="font-size:clamp(1.5rem,5vw,2.2rem)">How well do you <em>know</em> her?</h2>
       <p class="sub">She sees every score. No pressure.</p>
       <div id="quiz2"></div>
       <div class="score" id="finalscore"></div>
@@ -658,6 +662,21 @@ $('#submitwish').onclick=async()=>{
   }
 };
 
+/* ---------- ambient photo wall (drifts in the background) ---------- */
+function renderPhotoWall(urls){
+  const wall=$('#photowall');
+  wall.innerHTML='';
+  urls.filter(Boolean).slice(0,14).forEach(u=>{
+    const img=document.createElement('img');
+    img.src=u; img.loading='lazy'; img.alt='';
+    const w=140+Math.random()*90;
+    img.style.width=w+'px'; img.style.height=(w*1.2)+'px';
+    img.style.left=(Math.random()*90)+'%'; img.style.top=(Math.random()*90)+'%';
+    img.style.transform=`rotate(${(Math.random()*24-12).toFixed(1)}deg)`;
+    wall.appendChild(img);
+  });
+}
+
 /* ---------- render cast ---------- */
 async function loadCast(){
   const box=$('#cast');
@@ -667,6 +686,7 @@ async function loadCast(){
     box.innerHTML='<div class="empty">No cast yet. Whoever opens this first, goes first.</div>';
     return;
   }
+  renderPhotoWall(entries.map(e=>e.photo_url));
   box.innerHTML='<div class="cards">'+entries.map(e=>`
     <div class="card">
       <div class="who">${esc(e.name)}${e.role?' · '+esc(e.role):''}</div>

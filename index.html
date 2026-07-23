@@ -233,8 +233,8 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <div class="eyebrow">Scene one</div>
   <h2 class="reel" style="margin-bottom:6px">Blow them <em>out</em>.</h2>
   <div class="cake" id="cake"></div>
-  <p id="candlehint">Tap each candle — or hold the mic and actually blow</p>
-  <button class="btn ghost" id="micbtn" style="margin-top:18px">Use my mic</button>
+  <p id="candlehint">Make a wish, then blow</p>
+  <button class="btn" id="blowbtn" style="margin-top:18px">Blow out the candles</button>
 </div>
 
 <!-- ============ FILM ============ -->
@@ -524,7 +524,6 @@ function runCandles(){
   for(let i=0;i<CONFIG.candleCount;i++){
     const c=document.createElement('div'); c.className='candle';
     c.innerHTML='<div class="flame"></div>';
-    c.onclick=()=>blowOne(c);
     cake.appendChild(c);
   }
 }
@@ -533,22 +532,10 @@ function blowOne(c){
   c.classList.add('out'); blown++; burst(14);
   if(blown>=CONFIG.candleCount) setTimeout(enterFilm,700);
 }
-$('#micbtn').onclick=async()=>{
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const ac=new AudioContext(), src=ac.createMediaStreamSource(stream), an=ac.createAnalyser();
-    an.fftSize=512; src.connect(an);
-    const data=new Uint8Array(an.frequencyBinCount);
-    $('#candlehint').textContent='Now blow.';
-    $('#micbtn').style.display='none';
-    const check=()=>{
-      an.getByteFrequencyData(data);
-      const vol=data.reduce((a,b)=>a+b,0)/data.length;
-      if(vol>42){ const next=[...document.querySelectorAll('.candle:not(.out)')][0]; if(next) blowOne(next); }
-      if(blown<CONFIG.candleCount) requestAnimationFrame(check);
-      else stream.getTracks().forEach(t=>t.stop());
-    }; check();
-  }catch(e){ $('#candlehint').textContent='Mic unavailable — tap the candles instead.'; }
+$('#blowbtn').onclick=()=>{
+  $('#blowbtn').disabled=true;
+  const candles=[...document.querySelectorAll('.candle:not(.out)')];
+  candles.forEach((c,i)=>setTimeout(()=>blowOne(c),i*220));
 };
 
 /* ---------- enter film ---------- */
@@ -556,7 +543,7 @@ function enterFilm(){
   $('#candles').style.display='none';
   $('#film').style.display='block';
   burst(140);
-  $('#ch1').classList.add('open');
+  $$('.chapter').forEach(c=>c.classList.add('open'));
   if(ROLE==='wisher'){
     $('#wisherform').style.display='block';
     $('#castsub').textContent='Add yours below. She reads every single one.';

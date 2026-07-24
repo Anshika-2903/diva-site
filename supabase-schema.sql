@@ -134,3 +134,8 @@ create policy "public read riddles"   on riddles      for select using (true);
 create policy "public insert riddles" on riddles      for insert with check (true);
 create policy "public read traitphotos"   on trait_photos for select using (true);
 create policy "public insert traitphotos" on trait_photos for insert with check (true);
+
+-- ============================================================
+-- MIGRATION 3: multiple-choice riddles (4 options, one correct)
+-- ============================================================
+alter table riddles add column if not exists options text[];

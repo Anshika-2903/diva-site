@@ -203,8 +203,11 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .riddle{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:20px}
 .riddle h4{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin-bottom:4px}
 .riddle .by{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--marigold);margin-bottom:12px}
-.riddle .ans-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-.riddle .ans-row input{flex:1;min-width:160px}
+.riddle .ropt{display:block;width:100%;text-align:left;background:rgba(253,244,227,.04);border:1px solid rgba(232,200,122,.22);color:var(--cream);padding:11px 14px;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--body);font-size:.9rem;transition:.15s}
+.riddle .ropt:hover{border-color:var(--magenta)}
+.riddle .ropt.right{background:rgba(80,180,120,.2);border-color:#5ab97a}
+.riddle .ropt.wrong{background:rgba(214,36,110,.2);border-color:var(--magenta)}
+.riddle .ropt:disabled{cursor:default}
 .riddle .verdict{font-family:var(--cond);letter-spacing:.1em;font-size:.8rem;margin-top:10px}
 .riddle .verdict.ok{color:#5ab97a}
 .riddle .verdict.no{color:var(--magenta)}
@@ -463,9 +466,15 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <label for="r-q">The riddle</label>
       <input id="r-q" placeholder="What did she order, every single time, for four years?">
       <div class="field-row">
-        <div><label for="r-a">The answer</label><input id="r-a" placeholder="cold coffee, no sugar"></div>
-        <div><label for="r-name">Your name</label><input id="r-name" placeholder="e.g. Riya"></div>
+        <div><label for="r-opt0">Option A <span style="opacity:.5;text-transform:none;letter-spacing:0">(correct one)</span></label><input id="r-opt0" placeholder="cold coffee, no sugar"></div>
+        <div><label for="r-opt1">Option B</label><input id="r-opt1" placeholder="chai, extra sugar"></div>
       </div>
+      <div class="field-row">
+        <div><label for="r-opt2">Option C</label><input id="r-opt2" placeholder="black coffee"></div>
+        <div><label for="r-opt3">Option D</label><input id="r-opt3" placeholder="literally just water"></div>
+      </div>
+      <label for="r-name">Your name</label>
+      <input id="r-name" placeholder="e.g. Riya">
       <button class="btn" id="r-submit" style="margin-top:18px">Add my riddle</button>
     </div>
 
@@ -882,8 +891,9 @@ function openWall(trait){
     <div class="mbilled">If Namrata were a ${label}…</div></div></div>`;
   if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure><img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` · ${esc(p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
   if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}</span>`).join('')}</div>`;
-  if(!d.photos.length && !d.words.length) body+=`<p style="opacity:.6;margin-top:16px">Nothing on this wall yet. Add the first below.</p>`;
-  body+=`
+  const canAdd=ROLE!=='diva';
+  if(!d.photos.length && !d.words.length) body+=`<p style="opacity:.6;margin-top:16px">${canAdd?'Nothing on this wall yet. Add the first below.':'Nothing on this wall yet.'}</p>`;
+  if(canAdd) body+=`
     <div class="miniform" style="margin-top:22px">
       <div class="eyebrow">Add to the ${label} wall</div>
       <label for="tw-value">The ${label} you think she is</label>
@@ -895,6 +905,7 @@ function openWall(trait){
       <button class="btn" id="tw-submit" style="margin-top:16px">Add to wall</button>
     </div>`;
   openModal(body);
+  if(!canAdd) return;
   let twBlob=null;
   $('#tw-photo').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const {blob}=await compress(f); twBlob=blob; };
   $('#tw-submit').onclick=async()=>{
@@ -936,14 +947,19 @@ async function loadDialogues(){
 /* =====================================================================
    REEL 5 — RIDDLES (submit + answer)
 ===================================================================== */
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
 $('#r-submit').onclick=async()=>{
-  const question=$('#r-q').value.trim(), answer=$('#r-a').value.trim();
-  if(!question||!answer){ toast('Add both a riddle and its answer'); return; }
+  const question=$('#r-q').value.trim();
+  const options=[$('#r-opt0').value.trim(),$('#r-opt1').value.trim(),$('#r-opt2').value.trim(),$('#r-opt3').value.trim()];
+  const answer=options[0];
+  if(!question||options.some(o=>!o)){ toast('Fill in the riddle and all four options'); return; }
   const btn=$('#r-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('riddles').insert({id:newId('r'),question,answer,name:$('#r-name').value.trim()});
+    const {error}=await sb.from('riddles').insert({id:newId('r'),question,options,answer,name:$('#r-name').value.trim()});
     if(error) throw error;
-    $('#r-q').value=''; $('#r-a').value=''; burst(50); toast('Riddle added'); loadRiddles();
+    $('#r-q').value=''; $('#r-opt0').value=''; $('#r-opt1').value=''; $('#r-opt2').value=''; $('#r-opt3').value='';
+    burst(50); toast('Riddle added'); loadRiddles();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
   btn.disabled=false; btn.textContent='Add my riddle';
 };
@@ -952,19 +968,29 @@ async function loadRiddles(){
   const {data,error}=await sb.from('riddles').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No riddles yet. Set the first one about her.</div>'; return; }
-  box.innerHTML=data.map((r,i)=>`
+  box.innerHTML=data.map((r,i)=>{
+    const opts=(r.options&&r.options.length===4)?shuffle(r.options):shuffle([r.answer,'','',''].filter(Boolean));
+    return `
     <div class="riddle">
       <h4>${esc(r.question)}</h4>
       ${r.name?`<div class="by">Set by ${esc(r.name)}</div>`:''}
-      <div class="ans-row"><input id="ra-${i}" placeholder="Your answer"><button class="btn small" data-i="${i}">Check</button></div>
+      <div class="opts" data-i="${i}">${opts.map(o=>`<button class="ropt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
       <div class="verdict" id="rv-${i}"></div>
-    </div>`).join('');
-  box.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{
-    const i=+b.dataset.i; const guess=$('#ra-'+i).value.trim().toLowerCase();
-    const v=$('#rv-'+i);
-    if(!guess){ v.textContent=''; return; }
-    if(guess===(data[i].answer||'').toLowerCase()){ v.className='verdict ok'; v.textContent='✓ Correct. You know her.'; burst(30); }
-    else{ v.className='verdict no'; v.textContent='✗ Not it. Ask someone who\'s known her longer.'; }
+    </div>`;
+  }).join('');
+  box.querySelectorAll('.opts').forEach(host=>{
+    const i=+host.dataset.i;
+    host.querySelectorAll('.ropt').forEach(b=>b.onclick=()=>{
+      const isRight=b.dataset.val.trim().toLowerCase()===(data[i].answer||'').trim().toLowerCase();
+      host.querySelectorAll('.ropt').forEach(x=>{
+        x.disabled=true;
+        if(x.dataset.val.trim().toLowerCase()===(data[i].answer||'').trim().toLowerCase()) x.classList.add('right');
+        else if(x===b) x.classList.add('wrong');
+      });
+      const v=$('#rv-'+i);
+      if(isRight){ v.className='verdict ok'; v.textContent='✓ Correct. You know her.'; burst(30); }
+      else{ v.className='verdict no'; v.textContent='✗ Not it. Ask someone who\'s known her longer.'; }
+    });
   });
 }
 

@@ -211,3 +211,18 @@ create table if not exists time_capsule (
 alter table time_capsule enable row level security;
 create policy "public read time capsule"   on time_capsule for select using (true);
 create policy "public insert time capsule" on time_capsule for insert with check (true);
+
+-- ============================================================
+-- MIGRATION 6: shared bucket list (open to everyone, including her)
+-- ============================================================
+create table if not exists bucket_list (
+  id text primary key,
+  name text,
+  item text not null,
+  done boolean default false,
+  created_at timestamptz default now()
+);
+alter table bucket_list enable row level security;
+create policy "public read bucket list"   on bucket_list for select using (true);
+create policy "public insert bucket list" on bucket_list for insert with check (true);
+create policy "public update bucket list" on bucket_list for update using (true) with check (true);

@@ -226,6 +226,17 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;white-space:pre-wrap;font-family:var(--serif)}
 .capnote .capwho{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--gold);margin-top:10px;white-space:normal}
 
+/* shared bucket list */
+.bucketlist{display:grid;gap:10px;margin-top:26px}
+.bucketitem{display:flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s}
+.bucketitem:hover{border-color:var(--magenta)}
+.bucketitem .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--gold);flex:0 0 20px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--marigold)}
+.bucketitem .txt{flex:1}
+.bucketitem .who{font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;font-size:.56rem;color:var(--marigold);opacity:.8}
+.bucketitem.done{opacity:.55}
+.bucketitem.done .txt{text-decoration:line-through}
+.bucketitem.done .box{background:var(--marigold);border-color:var(--marigold);color:var(--ink)}
+
 /* riddles */
 .riddlelist{display:grid;gap:16px;margin-top:26px}
 .riddle{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:20px}
@@ -583,6 +594,25 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     </div>
 
     <div id="capsulebox"></div>
+    <button class="btn" data-unlock="chbucket" style="margin-top:24px">Roll the bonus reel</button>
+  </div></section>
+
+  <!-- REEL 6½: SHARED BUCKET LIST -->
+  <section class="chapter" id="chbucket"><div class="wrap">
+    <div class="eyebrow">Reel six and a half</div>
+    <h2 class="reel">Things we should <em>do together</em></h2>
+    <p class="sub">Not about her — about all of us. A running list for this year.</p>
+
+    <div class="miniform" id="bucketform">
+      <div class="eyebrow">Add to the list</div>
+      <label for="b-item">The thing</label>
+      <input id="b-item" placeholder="A road trip with no plan">
+      <label for="b-name">Your name</label>
+      <input id="b-name" placeholder="e.g. Riya">
+      <button class="btn" id="b-submit" style="margin-top:18px">Add it</button>
+    </div>
+
+    <div class="bucketlist" id="bucketlist"></div>
     <button class="btn" data-unlock="ch8" style="margin-top:24px">Roll the last reel</button>
   </div></section>
 
@@ -617,7 +647,7 @@ const CONFIG = {
     "Ready."
   ],
   candleCount: 5,
-  capsuleUnlock: "2099-01-01",   // CHANGE THIS to her NEXT birthday, format YYYY-MM-DD — until then the capsule stays locked for everyone, including her
+  capsuleUnlock: "2027-07-29",   // her next birthday after this one — change if the date's wrong
   letter: `Namrata,\n\n[Write it badly on purpose. Say the specific thing you'd never say out loud.]\n\n[One line about who she was when you met her.]\n\n[One line about who she is now.]\n\n[Then stop. Don't explain it.]\n\nHappy birthday, diva.\n— [YOU]`
 };
 /* ================================================================ */
@@ -735,7 +765,7 @@ function enterFilm(){
     $('#complimentssub').textContent='Kind things people said about you, anonymously.';
     $('#capsulesub').textContent='Notes people left for next year. Locked until it\'s time — even for you.';
   }
-  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadPlaylist(); loadRiddles(); loadCompliments(); loadCapsule();
+  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadPlaylist(); loadRiddles(); loadCompliments(); loadCapsule(); loadBucketList();
 }
 
 /* ---------- chapter unlocking (scroll to next) ---------- */
@@ -1260,6 +1290,42 @@ async function loadCapsule(){
   if(!data||!data.length){ box.innerHTML='<div class="empty">The capsule opened — but nobody left anything.</div>'; return; }
   box.innerHTML=`<div class="capsule-open"><div class="capheader">Opened at last. Here's what was waiting.</div>`+
     data.map(c=>`<div class="capnote">${esc(c.note)}${c.name?`<div class="capwho">— ${esc(c.name)}</div>`:''}</div>`).join('')+`</div>`;
+}
+
+/* =====================================================================
+   REEL 6½ — SHARED BUCKET LIST (open to everyone, including her)
+===================================================================== */
+$('#b-submit').onclick=async()=>{
+  const item=$('#b-item').value.trim();
+  if(!item){ toast('Add a thing to do first'); return; }
+  const btn=$('#b-submit'); btn.disabled=true; btn.textContent='Adding…';
+  try{
+    const {error}=await sb.from('bucket_list').insert({id:newId('b'),item,name:$('#b-name').value.trim(),done:false});
+    if(error) throw error;
+    $('#b-item').value='';
+    burst(50); toast('Added to the list'); loadBucketList();
+  }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+  btn.disabled=false; btn.textContent='Add it';
+};
+async function loadBucketList(){
+  const box=$('#bucketlist');
+  const {data,error}=await sb.from('bucket_list').select('*').order('created_at',{ascending:true});
+  if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">Nothing on the list yet. Add the first thing.</div>'; return; }
+  box.innerHTML=data.map((b,i)=>`
+    <div class="bucketitem${b.done?' done':''}" data-i="${i}">
+      <div class="box">${b.done?'✓':''}</div>
+      <div class="txt">${esc(b.item)}${b.name?`<div class="who">Added by ${esc(b.name)}</div>`:''}</div>
+    </div>`).join('');
+  box.querySelectorAll('.bucketitem').forEach(el=>el.onclick=async()=>{
+    const b=data[+el.dataset.i];
+    try{
+      const {error}=await sb.from('bucket_list').update({done:!b.done}).eq('id',b.id);
+      if(error) throw error;
+      if(!b.done) burst(20);
+      loadBucketList();
+    }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+  });
 }
 
 /* ---------- konami → blooper ---------- */

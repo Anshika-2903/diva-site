@@ -216,6 +216,16 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .stickynote:nth-child(3n+2){--r:2deg}
 .stickynote:nth-child(3n){--r:-1deg}
 
+/* time capsule */
+.capsule-locked{border:2px dashed rgba(232,200,122,.35);border-radius:16px;padding:40px 24px;text-align:center;margin-top:26px}
+.capsule-locked .lock{font-size:2.4rem}
+.capsule-locked .until{font-family:var(--display);color:var(--marigold);font-size:1.5rem;margin-top:10px}
+.capsule-locked .count{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--gold);opacity:.75;margin-top:8px}
+.capsule-open{margin-top:26px}
+.capsule-open .capheader{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--marigold);margin-bottom:14px}
+.capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;white-space:pre-wrap;font-family:var(--serif)}
+.capnote .capwho{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--gold);margin-top:10px;white-space:normal}
+
 /* riddles */
 .riddlelist{display:grid;gap:16px;margin-top:26px}
 .riddle{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:20px}
@@ -554,6 +564,25 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     </div>
 
     <div class="compliments" id="compliments"></div>
+    <button class="btn" data-unlock="chcapsule" style="margin-top:24px">Roll the last reel but one</button>
+  </div></section>
+
+  <!-- REEL 6: TIME CAPSULE (locked until next birthday) -->
+  <section class="chapter" id="chcapsule"><div class="wrap">
+    <div class="eyebrow">Reel six</div>
+    <h2 class="reel">The <em>time capsule</em></h2>
+    <p class="sub" id="capsulesub">Leave a note for next year. Nobody can read any of these yet — not even her.</p>
+
+    <div class="miniform" id="capsuleform" style="display:none">
+      <div class="eyebrow">Seal something away</div>
+      <label for="cap-name">Your name <span style="opacity:.5;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <input id="cap-name" placeholder="e.g. Riya">
+      <label for="cap-note">Your note for next year's her</label>
+      <textarea id="cap-note" rows="4" placeholder="By the time you read this..."></textarea>
+      <button class="btn" id="cap-submit" style="margin-top:18px">Seal it in the capsule</button>
+    </div>
+
+    <div id="capsulebox"></div>
     <button class="btn" data-unlock="ch8" style="margin-top:24px">Roll the last reel</button>
   </div></section>
 
@@ -588,6 +617,7 @@ const CONFIG = {
     "Ready."
   ],
   candleCount: 5,
+  capsuleUnlock: "2099-01-01",   // CHANGE THIS to her NEXT birthday, format YYYY-MM-DD — until then the capsule stays locked for everyone, including her
   letter: `Namrata,\n\n[Write it badly on purpose. Say the specific thing you'd never say out loud.]\n\n[One line about who she was when you met her.]\n\n[One line about who she is now.]\n\n[Then stop. Don't explain it.]\n\nHappy birthday, diva.\n— [YOU]`
 };
 /* ================================================================ */
@@ -681,7 +711,7 @@ function enterFilm(){
   burst(140);
   $$('.chapter').forEach(c=>c.classList.add('open'));
   const isWisher=ROLE==='wisher';
-  ['stillform','numform','wisherform','dlgform','playlistform','riddleform','complimentform'].forEach(id=>{
+  ['stillform','numform','wisherform','dlgform','playlistform','riddleform','complimentform','capsuleform'].forEach(id=>{
     $('#'+id).style.display=isWisher?'block':'none';
   });
   if(isWisher){
@@ -693,6 +723,7 @@ function enterFilm(){
     $('#playlistsub').textContent='Add a song that reminds you of her — it builds the soundtrack for everyone.';
     $('#riddlesub').textContent='Set a riddle only her people could crack — then vote on everyone else\'s. Namrata reveals the real answer.';
     $('#complimentssub').textContent='Say something kind about her. No name attached — that\'s the point.';
+    $('#capsulesub').textContent='Leave a note for next year. Nobody can read any of these yet — not even her.';
   } else {
     $('#stillsub').textContent="Everyone's favourite photo of her — with a caption.";
     $('#numsub').textContent='Her year, audited.';
@@ -702,8 +733,9 @@ function enterFilm(){
     $('#playlistsub').textContent='The soundtrack everyone built for you.';
     $('#riddlesub').textContent='Riddles your people set about you. Tap the true answer to reveal it to everyone.';
     $('#complimentssub').textContent='Kind things people said about you, anonymously.';
+    $('#capsulesub').textContent='Notes people left for next year. Locked until it\'s time — even for you.';
   }
-  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadPlaylist(); loadRiddles(); loadCompliments();
+  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadPlaylist(); loadRiddles(); loadCompliments(); loadCapsule();
 }
 
 /* ---------- chapter unlocking (scroll to next) ---------- */
@@ -1188,6 +1220,46 @@ async function loadCompliments(){
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No compliments yet. Be the first, anonymously.</div>'; return; }
   box.innerHTML=data.map(c=>`<div class="stickynote">${esc(c.text)}</div>`).join('');
+}
+
+/* =====================================================================
+   REEL 6 — TIME CAPSULE (locked until next birthday, for everyone)
+===================================================================== */
+$('#cap-submit').onclick=async()=>{
+  const note=$('#cap-note').value.trim();
+  if(!note){ toast('Write a note first'); return; }
+  const btn=$('#cap-submit'); btn.disabled=true; btn.textContent='Sealing…';
+  try{
+    const {error}=await sb.from('time_capsule').insert({id:newId('cap'),name:$('#cap-name').value.trim(),note});
+    if(error) throw error;
+    $('#cap-note').value=''; $('#cap-name').value='';
+    burst(60); toast('Sealed away for next year');
+  }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+  btn.disabled=false; btn.textContent='Seal it in the capsule';
+};
+function capsuleUnlockDate(){
+  const d=new Date(CONFIG.capsuleUnlock);
+  return isNaN(d) ? null : d;
+}
+async function loadCapsule(){
+  const box=$('#capsulebox');
+  const unlockDate=capsuleUnlockDate();
+  const isUnlocked=unlockDate && new Date()>=unlockDate;
+  if(!isUnlocked){
+    const daysLeft=unlockDate?Math.max(0,Math.ceil((unlockDate-new Date())/86400000)):null;
+    box.innerHTML=`
+      <div class="capsule-locked">
+        <div class="lock">🔒</div>
+        <div class="until">Sealed until ${unlockDate?unlockDate.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}):'a date only the config knows'}</div>
+        ${daysLeft!=null?`<div class="count">${daysLeft} day${daysLeft!==1?'s':''} to go</div>`:''}
+      </div>`;
+    return;
+  }
+  const {data,error}=await sb.from('time_capsule').select('*').order('created_at',{ascending:true});
+  if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">The capsule opened — but nobody left anything.</div>'; return; }
+  box.innerHTML=`<div class="capsule-open"><div class="capheader">Opened at last. Here's what was waiting.</div>`+
+    data.map(c=>`<div class="capnote">${esc(c.note)}${c.name?`<div class="capwho">— ${esc(c.name)}</div>`:''}</div>`).join('')+`</div>`;
 }
 
 /* ---------- konami → blooper ---------- */

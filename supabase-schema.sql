@@ -192,3 +192,22 @@ create table if not exists compliments (
 alter table compliments enable row level security;
 create policy "public read compliments"   on compliments for select using (true);
 create policy "public insert compliments" on compliments for insert with check (true);
+
+-- ============================================================
+-- MIGRATION 5: time capsule (locked until next birthday)
+-- Note: the site only ever queries this table client-side after
+-- CONFIG.capsuleUnlock has passed, so the UI never shows anyone
+-- (including Namrata) the notes early. The public read policy is
+-- still needed for the reveal to work once the date arrives — as
+-- with the rest of this site, true secrecy relies on nobody
+-- querying the API directly, same trust model as everything else.
+-- ============================================================
+create table if not exists time_capsule (
+  id text primary key,
+  name text,
+  note text not null,
+  created_at timestamptz default now()
+);
+alter table time_capsule enable row level security;
+create policy "public read time capsule"   on time_capsule for select using (true);
+create policy "public insert time capsule" on time_capsule for insert with check (true);

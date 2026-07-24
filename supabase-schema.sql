@@ -60,3 +60,77 @@ alter table cast_entries add column if not exists clip_url text;
 -- toggle Public bucket ON → Create. Then run:
 create policy "public read videos" on storage.objects for select using (bucket_id = 'videos');
 create policy "public upload videos" on storage.objects for insert with check (bucket_id = 'videos');
+
+-- ============================================================
+-- MIGRATION 2: profile pics + wish note, and the new
+-- collaborative reels (stills, box numbers, dialogues,
+-- riddles, trait-wall photos). Run this whole block once in
+-- the SQL Editor. Safe to re-run — everything uses IF NOT EXISTS.
+-- No new storage buckets are needed; images reuse `photos`.
+-- ============================================================
+
+-- profile picture + birthday wish note on each cast card
+alter table cast_entries add column if not exists avatar_url text;
+alter table cast_entries add column if not exists wish text;
+
+-- Reel one: photos of her, with a caption
+create table if not exists her_stills (
+  id text primary key,
+  name text,
+  caption text,
+  photo_url text,
+  created_at timestamptz default now()
+);
+
+-- Reel two: box-office numbers people add
+create table if not exists box_numbers (
+  id text primary key,
+  name text,
+  num text not null,
+  label text not null,
+  created_at timestamptz default now()
+);
+
+-- Reel four: iconic dialogues she says a lot
+create table if not exists dialogues (
+  id text primary key,
+  name text,
+  line text not null,
+  created_at timestamptz default now()
+);
+
+-- Reel five: riddles people set about her
+create table if not exists riddles (
+  id text primary key,
+  name text,
+  question text not null,
+  answer text not null,
+  created_at timestamptz default now()
+);
+
+-- Trait walls: a photo (and/or word) of what flower/weather/colour/song she is
+create table if not exists trait_photos (
+  id text primary key,
+  name text,
+  trait text not null,   -- 'flower' | 'weather' | 'color' | 'song'
+  value text,
+  photo_url text,
+  created_at timestamptz default now()
+);
+
+alter table her_stills   enable row level security;
+alter table box_numbers  enable row level security;
+alter table dialogues    enable row level security;
+alter table riddles      enable row level security;
+alter table trait_photos enable row level security;
+
+create policy "public read stills"   on her_stills   for select using (true);
+create policy "public insert stills"  on her_stills   for insert with check (true);
+create policy "public read numbers"   on box_numbers  for select using (true);
+create policy "public insert numbers" on box_numbers  for insert with check (true);
+create policy "public read dialogues"   on dialogues  for select using (true);
+create policy "public insert dialogues" on dialogues  for insert with check (true);
+create policy "public read riddles"   on riddles      for select using (true);
+create policy "public insert riddles" on riddles      for insert with check (true);
+create policy "public read traitphotos"   on trait_photos for select using (true);
+create policy "public insert traitphotos" on trait_photos for insert with check (true);

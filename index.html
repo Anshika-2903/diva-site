@@ -176,11 +176,11 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .modalcard audio,.modalcard video,.modalcard iframe{width:100%;margin-top:12px;border-radius:8px;border:0}
 
 /* trait walls */
-.wallset{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
+.wallset{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:30px}
 .wallgroup{background:linear-gradient(160deg,var(--ink2),#241019);border:1px solid rgba(232,200,122,.22);border-radius:16px;padding:20px;cursor:pointer;transition:.2s;text-align:center}
 .wallgroup:hover{transform:translateY(-4px);border-color:var(--magenta);box-shadow:0 16px 36px rgba(0,0,0,.5)}
 .wallgroup .ic{font-size:1.8rem}
-.wallgroup h4{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:6px 0 2px;color:var(--cream)}
+.wallgroup h4{font-family:var(--serif);font-weight:600;font-size:1.1rem;margin:6px 0 2px;color:var(--cream)}
 .wallgroup .cnt{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.6rem;color:var(--marigold)}
 .wallgroup .peek{display:flex;justify-content:center;gap:-8px;margin-top:12px;min-height:38px}
 .wallgroup .peek img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--ink2);margin-left:-8px}
@@ -190,6 +190,7 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .collage figcaption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(26,11,20,.85));font-size:.72rem;padding:16px 8px 7px;text-align:center}
 .cloud{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
 .cloudchip{font-family:var(--serif);font-style:italic;color:var(--gold);border:1px solid rgba(232,200,122,.35);padding:6px 14px;border-radius:99px;background:rgba(232,200,122,.06)}
+.cloudchip i{opacity:.65;font-style:normal;font-size:.82em;margin-left:5px}
 
 /* dialogues */
 .dialogues{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:26px}
@@ -197,6 +198,23 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .bubble .quote{font-family:var(--serif);font-style:italic;font-size:1.12rem;color:var(--cream);line-height:1.4}
 .bubble .quote::before{content:"“";color:var(--magenta);font-size:1.6rem;margin-right:2px}
 .bubble .attrib{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:10px}
+
+/* playlist */
+.playlist{display:grid;gap:14px;margin-top:26px}
+.songcard{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:16px}
+.songcard iframe{width:100%;border:0;border-radius:8px}
+.songcard .note{font-family:var(--serif);font-style:italic;opacity:.85;margin-top:10px}
+.songcard .who{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:8px}
+
+/* anonymous compliments */
+.compliments{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:26px}
+.stickynote{background:linear-gradient(160deg,var(--marigold),#e0a13d);color:var(--ink);border-radius:4px;padding:18px;
+  font-family:var(--serif);font-style:italic;font-size:.98rem;transform:rotate(var(--r,0deg));box-shadow:0 12px 26px rgba(0,0,0,.4);transition:.2s}
+.stickynote:hover{transform:rotate(0deg) scale(1.03)}
+.stickynote:nth-child(3n){background:linear-gradient(160deg,var(--gold),#cdae6c)}
+.stickynote:nth-child(3n+1){--r:-2.5deg}
+.stickynote:nth-child(3n+2){--r:2deg}
+.stickynote:nth-child(3n){--r:-1deg}
 
 /* riddles */
 .riddlelist{display:grid;gap:16px;margin-top:26px}
@@ -208,9 +226,13 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .riddle .ropt.right{background:rgba(80,180,120,.2);border-color:#5ab97a}
 .riddle .ropt.wrong{background:rgba(214,36,110,.2);border-color:var(--magenta)}
 .riddle .ropt:disabled{cursor:default}
+.riddle .tally{font-size:.72rem;opacity:.6;margin-top:-4px;margin-bottom:8px;display:block}
 .riddle .verdict{font-family:var(--cond);letter-spacing:.1em;font-size:.8rem;margin-top:10px}
 .riddle .verdict.ok{color:#5ab97a}
 .riddle .verdict.no{color:var(--magenta)}
+.riddle .verdict.pending{color:var(--gold)}
+.riddle .votename{max-width:220px;margin-bottom:10px}
+.riddle .divehint{font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;font-size:.66rem;color:var(--gold);opacity:.8;margin-bottom:10px}
 
 /* letter */
 #letter{min-height:220px;font-size:1.05rem;white-space:pre-wrap;max-width:52ch;margin:30px auto 0;text-align:left;font-family:var(--serif)}
@@ -308,7 +330,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch1"><div class="wrap">
     <div class="eyebrow">Reel one</div>
     <h2 class="reel">Production <em>stills</em></h2>
-    <p class="sub">Everyone's favourite photo of her — with a caption. Add yours; they fill the gallery.</p>
+    <p class="sub" id="stillsub">Everyone's favourite photo of her — with a caption.</p>
 
     <div class="miniform" id="stillform" style="display:none">
       <div class="eyebrow">Add a still</div>
@@ -330,7 +352,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch2"><div class="wrap">
     <div class="eyebrow">Reel two</div>
     <h2 class="reel">Box office <em>numbers</em></h2>
-    <p class="sub">Her year, audited. Add your own stat — a number and what it counts.</p>
+    <p class="sub" id="numsub">Her year, audited.</p>
     <div class="stats" id="statgrid">
       <div class="stat"><div class="n">847</div><div class="l">times she said "leaving in 5 mins"</div></div>
       <div class="stat"><div class="n">12</div><div class="l">outfits tried before leaving</div></div>
@@ -373,6 +395,15 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <label for="w-wish">Your birthday wish for her <span style="opacity:.5;text-transform:none;letter-spacing:0">(a note, a paragraph — say the thing)</span></label>
       <textarea id="w-wish" rows="4" placeholder="Namrata, ..."></textarea>
 
+      <label for="w-met">How did we first meet?</label>
+      <textarea id="w-met" rows="2" placeholder="The story of how we met..."></textarea>
+
+      <label for="w-first">What I thought of you when I first saw you</label>
+      <textarea id="w-first" rows="2" placeholder="Honestly? I thought..."></textarea>
+
+      <label for="w-admire">One thing I admire about you</label>
+      <textarea id="w-admire" rows="2" placeholder="I've always admired..."></textarea>
+
       <label for="w-review">Your one-line review of her</label>
       <textarea id="w-review" rows="2" placeholder="Would be friends again. 10/10."></textarea>
       <label for="w-stars">Rating</label>
@@ -392,6 +423,10 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <div class="field-row">
         <div><label for="w-color">A colour</label><input id="w-color" placeholder="fuchsia, no debate"></div>
         <div><label for="w-song">A song</label><input id="w-song" placeholder="the one that plays when she enters"></div>
+      </div>
+      <div class="field-row">
+        <div><label for="w-moviechar">A movie character</label><input id="w-moviechar" placeholder="the lead, obviously"></div>
+        <div><label for="w-animatedchar">An animated character</label><input id="w-animatedchar" placeholder="chaotic Disney princess energy"></div>
       </div>
 
       <label for="w-photo">Photos of you with Namrata <span style="opacity:.5;text-transform:none;letter-spacing:0">(add as many as you like)</span></label>
@@ -426,12 +461,14 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="chwalls"><div class="wrap">
     <div class="eyebrow">Reel three and a half</div>
     <h2 class="reel">If she were <em>everything</em></h2>
-    <p class="sub">Tap a wall to open its collage — everyone's answers, and the photos they uploaded of what she is.</p>
+    <p class="sub" id="wallsub">Tap a wall to open its collage and see who chose what.</p>
     <div class="wallset">
       <div class="wallgroup" data-trait="flower"><div class="ic">🌸</div><h4>The flower wall</h4><div class="cnt" id="cnt-flower">tap to open</div><div class="peek" id="peek-flower"></div></div>
       <div class="wallgroup" data-trait="weather"><div class="ic">☁️</div><h4>The weather wall</h4><div class="cnt" id="cnt-weather">tap to open</div><div class="peek" id="peek-weather"></div></div>
       <div class="wallgroup" data-trait="color"><div class="ic">🎨</div><h4>The colour wall</h4><div class="cnt" id="cnt-color">tap to open</div><div class="peek" id="peek-color"></div></div>
       <div class="wallgroup" data-trait="song"><div class="ic">🎵</div><h4>The song wall</h4><div class="cnt" id="cnt-song">tap to open</div><div class="peek" id="peek-song"></div></div>
+      <div class="wallgroup" data-trait="moviechar"><div class="ic">🎬</div><h4>The movie character wall</h4><div class="cnt" id="cnt-moviechar">tap to open</div><div class="peek" id="peek-moviechar"></div></div>
+      <div class="wallgroup" data-trait="animatedchar"><div class="ic">🧸</div><h4>The animated character wall</h4><div class="cnt" id="cnt-animatedchar">tap to open</div><div class="peek" id="peek-animatedchar"></div></div>
     </div>
     <button class="btn" data-unlock="ch4" style="margin-top:28px">Roll reel four</button>
   </div></section>
@@ -440,7 +477,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch4"><div class="wrap">
     <div class="eyebrow">Reel four</div>
     <h2 class="reel">Iconic <em>dialogues</em></h2>
-    <p class="sub">The lines she says on loop. Immortalise one.</p>
+    <p class="sub" id="dlgsub">The lines she says on loop.</p>
 
     <div class="miniform" id="dlgform" style="display:none">
       <div class="eyebrow">Add a line she always says</div>
@@ -452,6 +489,27 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     </div>
 
     <div class="dialogues" id="dialogues"></div>
+    <button class="btn" data-unlock="chplaylist" style="margin-top:24px">Roll the soundtrack</button>
+  </div></section>
+
+  <!-- REEL 4½: COLLABORATIVE PLAYLIST -->
+  <section class="chapter" id="chplaylist"><div class="wrap">
+    <div class="eyebrow">Reel four and a half</div>
+    <h2 class="reel">The <em>soundtrack</em></h2>
+    <p class="sub" id="playlistsub">A song that reminds everyone of her, all in one place.</p>
+
+    <div class="miniform" id="playlistform" style="display:none">
+      <div class="eyebrow">Add a track</div>
+      <label for="p-url">Spotify or YouTube link</label>
+      <input id="p-url" placeholder="https://open.spotify.com/track/… or a YouTube link">
+      <label for="p-note">Why this song?</label>
+      <input id="p-note" placeholder="This is her walking-into-the-room song">
+      <label for="p-name">Your name</label>
+      <input id="p-name" placeholder="e.g. Riya">
+      <button class="btn" id="p-submit" style="margin-top:18px">Add to the soundtrack</button>
+    </div>
+
+    <div class="playlist" id="playlist"></div>
     <button class="btn" data-unlock="ch5" style="margin-top:24px">Roll reel five</button>
   </div></section>
 
@@ -459,14 +517,14 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch5"><div class="wrap">
     <div class="eyebrow">Reel five</div>
     <h2 class="reel">The <em>interval</em></h2>
-    <p class="sub">Set a riddle only her people could crack — then try everyone else's.</p>
+    <p class="sub" id="riddlesub">Riddles about her — vote for what you think is true. Namrata reveals the real answer.</p>
 
     <div class="miniform" id="riddleform" style="display:none">
       <div class="eyebrow">Set a riddle about her</div>
       <label for="r-q">The riddle</label>
       <input id="r-q" placeholder="What did she order, every single time, for four years?">
       <div class="field-row">
-        <div><label for="r-opt0">Option A <span style="opacity:.5;text-transform:none;letter-spacing:0">(correct one)</span></label><input id="r-opt0" placeholder="cold coffee, no sugar"></div>
+        <div><label for="r-opt0">Option A</label><input id="r-opt0" placeholder="cold coffee, no sugar"></div>
         <div><label for="r-opt1">Option B</label><input id="r-opt1" placeholder="chai, extra sugar"></div>
       </div>
       <div class="field-row">
@@ -479,7 +537,24 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     </div>
 
     <div class="riddlelist" id="riddles"></div>
-    <button class="btn" data-unlock="ch8" style="margin-top:32px">Roll the last reel</button>
+    <button class="btn" data-unlock="chcompliments" style="margin-top:32px">Roll the last reel but one</button>
+  </div></section>
+
+  <!-- REEL 5½: ANONYMOUS COMPLIMENTS -->
+  <section class="chapter" id="chcompliments"><div class="wrap">
+    <div class="eyebrow">Reel five and a half</div>
+    <h2 class="reel">Anonymous <em>compliments</em></h2>
+    <p class="sub" id="complimentssub">No names. Just the nice things people are too shy to sign.</p>
+
+    <div class="miniform" id="complimentform" style="display:none">
+      <div class="eyebrow">Leave one, anonymously</div>
+      <label for="c-text">Your compliment</label>
+      <textarea id="c-text" rows="3" placeholder="Something true, and kind, and unsigned."></textarea>
+      <button class="btn" id="c-submit" style="margin-top:18px">Post it anonymously</button>
+    </div>
+
+    <div class="compliments" id="compliments"></div>
+    <button class="btn" data-unlock="ch8" style="margin-top:24px">Roll the last reel</button>
   </div></section>
 
   <!-- LAST REEL: LETTER -->
@@ -605,17 +680,30 @@ function enterFilm(){
   $('#film').style.display='block';
   burst(140);
   $$('.chapter').forEach(c=>c.classList.add('open'));
-  if(ROLE==='wisher'){
-    $('#stillform').style.display='block';
-    $('#numform').style.display='block';
-    $('#wisherform').style.display='block';
-    $('#dlgform').style.display='block';
-    $('#riddleform').style.display='block';
+  const isWisher=ROLE==='wisher';
+  ['stillform','numform','wisherform','dlgform','playlistform','riddleform','complimentform'].forEach(id=>{
+    $('#'+id).style.display=isWisher?'block':'none';
+  });
+  if(isWisher){
+    $('#stillsub').textContent="Everyone's favourite photo of her — with a caption. Add yours; they fill the gallery.";
+    $('#numsub').textContent='Her year, audited. Add your own stat — a number and what it counts.';
     $('#castsub').textContent='Add yours below. She reads every single one. Tap any card to open it.';
+    $('#wallsub').textContent='Tap a wall to open its collage — everyone\'s answers, and the photos they uploaded of what she is.';
+    $('#dlgsub').textContent='The lines she says on loop. Immortalise one.';
+    $('#playlistsub').textContent='Add a song that reminds you of her — it builds the soundtrack for everyone.';
+    $('#riddlesub').textContent='Set a riddle only her people could crack — then vote on everyone else\'s. Namrata reveals the real answer.';
+    $('#complimentssub').textContent='Say something kind about her. No name attached — that\'s the point.';
   } else {
+    $('#stillsub').textContent="Everyone's favourite photo of her — with a caption.";
+    $('#numsub').textContent='Her year, audited.';
     $('#castsub').textContent='Everyone who loves you, on record. Tap any card to open it.';
+    $('#wallsub').textContent='Tap a wall to open its collage and see who chose what.';
+    $('#dlgsub').textContent='The lines you say on loop, as heard by everyone else.';
+    $('#playlistsub').textContent='The soundtrack everyone built for you.';
+    $('#riddlesub').textContent='Riddles your people set about you. Tap the true answer to reveal it to everyone.';
+    $('#complimentssub').textContent='Kind things people said about you, anonymously.';
   }
-  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadRiddles();
+  loadStills(); loadNumbers(); loadCast(); loadDialogues(); loadPlaylist(); loadRiddles(); loadCompliments();
 }
 
 /* ---------- chapter unlocking (scroll to next) ---------- */
@@ -646,7 +734,7 @@ async function uploadImage(blob,path){
 }
 function newId(p){ return p+Date.now()+Math.floor(Math.random()*999); }
 
-/* ---------- video embed helper ---------- */
+/* ---------- video / song embed helpers ---------- */
 function embedVideo(url){
   if(!url) return '';
   const yt=url.match(/(?:youtu\.be\/|v=)([\w-]{11})/);
@@ -654,6 +742,14 @@ function embedVideo(url){
   const dr=url.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
   if(dr) return `<iframe height="220" src="https://drive.google.com/file/d/${dr[1]}/preview" allowfullscreen loading="lazy"></iframe>`;
   return `<a class="chip" style="margin-top:12px;display:inline-block" href="${url}" target="_blank" rel="noopener">▶ Watch their video</a>`;
+}
+function embedSong(url){
+  if(!url) return '<span class="chip">no link</span>';
+  const sp=url.match(/open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/);
+  if(sp) return `<iframe src="https://open.spotify.com/embed/${sp[1]}/${sp[2]}" height="80" loading="lazy" allow="encrypted-media"></iframe>`;
+  const yt=url.match(/(?:youtu\.be\/|v=)([\w-]{11})/);
+  if(yt) return `<iframe height="80" src="https://www.youtube.com/embed/${yt[1]}" loading="lazy" allowfullscreen></iframe>`;
+  return `<a class="chip" href="${esc(url)}" target="_blank" rel="noopener">▶ Listen</a>`;
 }
 
 /* =====================================================================
@@ -682,7 +778,7 @@ async function loadStills(){
   const box=$('#stills');
   const {data,error}=await sb.from('her_stills').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Gallery is taking a moment. Refresh to try again.</div>'; return; }
-  if(!data||!data.length){ box.innerHTML='<div class="empty">No stills yet. Add the first photo of her.</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">No stills yet.</div>'; return; }
   box.innerHTML=data.map(s=>`<figure><img src="${s.photo_url}" alt="${esc(s.caption||'photo of her')}">${(s.caption||s.name)?`<figcaption>${esc(s.caption||'')}${s.name?`<br><span style="opacity:.7;font-size:.7rem">— ${esc(s.name)}</span>`:''}</figcaption>`:''}</figure>`).join('');
 }
 
@@ -777,9 +873,11 @@ $('#submitwish').onclick=async()=>{
     }
     const entry={
       id, name, role:$('#w-role').value.trim(), wish:$('#w-wish').value.trim(),
+      met_story:$('#w-met').value.trim(), first_impression:$('#w-first').value.trim(), admire:$('#w-admire').value.trim(),
       review:$('#w-review').value.trim(), stars:+$('#w-stars').value, roast:$('#w-roast').value.trim(),
       flower:$('#w-flower').value.trim(), weather:$('#w-weather').value.trim(),
       color:$('#w-color').value.trim(), song:$('#w-song').value.trim(),
+      moviechar:$('#w-moviechar').value.trim(), animatedchar:$('#w-animatedchar').value.trim(),
       video:$('#w-video').value.trim(), avatar_url, photo_urls, audio_url, clip_url
     };
     const {error:insErr}=await sb.from('cast_entries').insert(entry);
@@ -824,6 +922,9 @@ function openCard(e){
       ${e.stars?`<div class="stars">${'★'.repeat(e.stars)}${'☆'.repeat(5-e.stars)}</div>`:''}</div>
     </div>
     ${e.wish?`<div class="wish">${esc(e.wish)}</div>`:''}
+    ${e.met_story?`<div class="mrow"><b>How we met</b>${esc(e.met_story)}</div>`:''}
+    ${e.first_impression?`<div class="mrow"><b>First impression</b>${esc(e.first_impression)}</div>`:''}
+    ${e.admire?`<div class="mrow"><b>One thing I admire</b>${esc(e.admire)}</div>`:''}
     ${e.review?`<div class="mrow"><b>The review</b>${esc(e.review)}</div>`:''}
     ${e.roast?`<div class="mrow"><b>Never forgetting</b><div class="quip">${esc(e.roast)}</div></div>`:''}
     ${e.photo_urls&&e.photo_urls.length?`<div class="snapgrid">${e.photo_urls.map(u=>`<img src="${u}" alt="">`).join('')}</div>`:''}
@@ -835,6 +936,8 @@ function openCard(e){
       ${e.weather?`<span class="chip">☁ ${esc(e.weather)}</span>`:''}
       ${e.color?`<span class="chip">◉ ${esc(e.color)}</span>`:''}
       ${e.song?`<span class="chip">♪ ${esc(e.song)}</span>`:''}
+      ${e.moviechar?`<span class="chip">🎬 ${esc(e.moviechar)}</span>`:''}
+      ${e.animatedchar?`<span class="chip">🧸 ${esc(e.animatedchar)}</span>`:''}
     </div>`;
   openModal(body);
 }
@@ -867,14 +970,14 @@ function renderPhotoWall(photoUrls,clipUrls){
 /* =====================================================================
    REEL 3½ — TRAIT WALLS (text answers + uploaded photos → collage modal)
 ===================================================================== */
-const TRAITS={flower:'🌸',weather:'☁️',color:'🎨',song:'🎵'};
-const TRAIT_NAMES={flower:'flower',weather:'weather',color:'colour',song:'song'};
+const TRAITS={flower:'🌸',weather:'☁️',color:'🎨',song:'🎵',moviechar:'🎬',animatedchar:'🧸'};
+const TRAIT_NAMES={flower:'flower',weather:'weather',color:'colour',song:'song',moviechar:'movie character',animatedchar:'animated character'};
 let TRAITDATA={};   // trait -> {words:[{value,name}], photos:[{value,name,photo_url}]}
 async function loadTraitWalls(){
-  const words={flower:[],weather:[],color:[],song:[]};
-  CAST.forEach(e=>{ ['flower','weather','color','song'].forEach(k=>{ if(e[k]) words[k].push({value:e[k],name:e.name}); }); });
+  const words={}; Object.keys(TRAITS).forEach(k=>words[k]=[]);
+  CAST.forEach(e=>{ Object.keys(TRAITS).forEach(k=>{ if(e[k]) words[k].push({value:e[k],name:e.name}); }); });
   const {data:tp}=await sb.from('trait_photos').select('*').order('created_at',{ascending:true});
-  const photos={flower:[],weather:[],color:[],song:[]};
+  const photos={}; Object.keys(TRAITS).forEach(k=>photos[k]=[]);
   (tp||[]).forEach(p=>{ if(photos[p.trait]) photos[p.trait].push(p); });
   TRAITDATA={}; Object.keys(TRAITS).forEach(k=>{ TRAITDATA[k]={words:words[k],photos:photos[k]}; });
   Object.keys(TRAITS).forEach(k=>{
@@ -890,14 +993,14 @@ function openWall(trait){
   let body=`<div class="mhead"><div><div class="mname">${TRAITS[trait]} The ${label} wall</div>
     <div class="mbilled">If Namrata were a ${label}…</div></div></div>`;
   if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure><img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` · ${esc(p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
-  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}</span>`).join('')}</div>`;
+  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}<i>— ${esc(w.name||'Anonymous')}</i></span>`).join('')}</div>`;
   const canAdd=ROLE!=='diva';
   if(!d.photos.length && !d.words.length) body+=`<p style="opacity:.6;margin-top:16px">${canAdd?'Nothing on this wall yet. Add the first below.':'Nothing on this wall yet.'}</p>`;
   if(canAdd) body+=`
     <div class="miniform" style="margin-top:22px">
       <div class="eyebrow">Add to the ${label} wall</div>
       <label for="tw-value">The ${label} you think she is</label>
-      <input id="tw-value" placeholder="${trait==='flower'?'marigold':trait==='weather'?'a warm monsoon':trait==='color'?'fuchsia':'her entrance song'}">
+      <input id="tw-value" placeholder="${trait==='flower'?'marigold':trait==='weather'?'a warm monsoon':trait==='color'?'fuchsia':trait==='moviechar'?'the lead in a rom-com':trait==='animatedchar'?'a chaotic Disney princess':'her entrance song'}">
       <label for="tw-photo">A photo of it <span style="opacity:.5;text-transform:none;letter-spacing:0">(optional)</span></label>
       <input type="file" id="tw-photo" accept="image/*">
       <label for="tw-name">Your name</label>
@@ -940,58 +1043,151 @@ async function loadDialogues(){
   const box=$('#dialogues');
   const {data,error}=await sb.from('dialogues').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
-  if(!data||!data.length){ box.innerHTML='<div class="empty">No dialogues yet. What does she say on loop?</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">No dialogues yet.</div>'; return; }
   box.innerHTML=data.map(d=>`<div class="bubble"><div class="quote">${esc(d.line)}”</div>${d.name?`<div class="attrib">Filed by ${esc(d.name)}</div>`:''}</div>`).join('');
 }
 
 /* =====================================================================
-   REEL 5 — RIDDLES (submit + answer)
+   REEL 4½ — COLLABORATIVE PLAYLIST
+===================================================================== */
+$('#p-submit').onclick=async()=>{
+  const url=$('#p-url').value.trim();
+  if(!url){ toast('Paste a song link first'); return; }
+  const btn=$('#p-submit'); btn.disabled=true; btn.textContent='Saving…';
+  try{
+    const {error}=await sb.from('playlist_songs').insert({id:newId('p'),url,note:$('#p-note').value.trim(),name:$('#p-name').value.trim()});
+    if(error) throw error;
+    $('#p-url').value=''; $('#p-note').value='';
+    burst(50); toast('Added to the soundtrack'); loadPlaylist();
+  }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+  btn.disabled=false; btn.textContent='Add to the soundtrack';
+};
+async function loadPlaylist(){
+  const box=$('#playlist');
+  const {data,error}=await sb.from('playlist_songs').select('*').order('created_at',{ascending:true});
+  if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">No songs yet. Add the first track.</div>'; return; }
+  box.innerHTML=data.map(s=>`
+    <div class="songcard">
+      ${embedSong(s.url)}
+      ${s.note?`<div class="note">"${esc(s.note)}"</div>`:''}
+      ${s.name?`<div class="who">Added by ${esc(s.name)}</div>`:''}
+    </div>`).join('');
+}
+
+/* =====================================================================
+   REEL 5 — RIDDLES (submit → vote → Namrata reveals the true answer)
 ===================================================================== */
 function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const votedRiddles=new Set();
 
 $('#r-submit').onclick=async()=>{
   const question=$('#r-q').value.trim();
   const options=[$('#r-opt0').value.trim(),$('#r-opt1').value.trim(),$('#r-opt2').value.trim(),$('#r-opt3').value.trim()];
-  const answer=options[0];
   if(!question||options.some(o=>!o)){ toast('Fill in the riddle and all four options'); return; }
   const btn=$('#r-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('riddles').insert({id:newId('r'),question,options,answer,name:$('#r-name').value.trim()});
+    const {error}=await sb.from('riddles').insert({id:newId('r'),question,options,answer:null,name:$('#r-name').value.trim()});
     if(error) throw error;
     $('#r-q').value=''; $('#r-opt0').value=''; $('#r-opt1').value=''; $('#r-opt2').value=''; $('#r-opt3').value='';
-    burst(50); toast('Riddle added'); loadRiddles();
+    burst(50); toast('Riddle added — people can start voting'); loadRiddles();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
   btn.disabled=false; btn.textContent='Add my riddle';
 };
+
+async function castVote(riddleId,optionValue,name){
+  const {error}=await sb.from('riddle_votes').insert({id:newId('rv'),riddle_id:riddleId,option_value:optionValue,name});
+  if(error) throw error;
+}
+async function revealAnswer(riddleId,optionValue){
+  const {error}=await sb.from('riddles').update({answer:optionValue}).eq('id',riddleId);
+  if(error) throw error;
+}
+
 async function loadRiddles(){
   const box=$('#riddles');
-  const {data,error}=await sb.from('riddles').select('*').order('created_at',{ascending:true});
+  const {data:riddles,error}=await sb.from('riddles').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
-  if(!data||!data.length){ box.innerHTML='<div class="empty">No riddles yet. Set the first one about her.</div>'; return; }
-  box.innerHTML=data.map((r,i)=>{
-    const opts=(r.options&&r.options.length===4)?shuffle(r.options):shuffle([r.answer,'','',''].filter(Boolean));
+  if(!riddles||!riddles.length){ box.innerHTML='<div class="empty">No riddles yet.</div>'; return; }
+  const {data:votes}=await sb.from('riddle_votes').select('*');
+  const tallyByRiddle={};
+  (votes||[]).forEach(v=>{ (tallyByRiddle[v.riddle_id] ||= {}); (tallyByRiddle[v.riddle_id][v.option_value] ||= []).push(v.name||'Anonymous'); });
+
+  box.innerHTML=riddles.map((r,i)=>{
+    const opts=(r.options&&r.options.length===4)?r.options:[];
+    const revealed=!!r.answer;
+    const tally=tallyByRiddle[r.id]||{};
+    const orderedOpts=revealed?opts:shuffle(opts);
+    const alreadyVoted=ROLE==='wisher' && votedRiddles.has(r.id);
+    const optsLocked=revealed||alreadyVoted;
+    let optsHtml=orderedOpts.map(o=>{
+      const names=tally[o]||[];
+      const isCorrect=revealed && o.trim().toLowerCase()===r.answer.trim().toLowerCase();
+      const showTally=revealed||ROLE==='diva';
+      const cls='ropt'+(isCorrect?' right':'');
+      const tallyLine=showTally?`<span class="tally">${names.length} vote${names.length!==1?'s':''}${names.length?': '+names.map(esc).join(', '):''}</span>`:'';
+      return `<button class="${cls}" data-val="${esc(o)}" ${optsLocked?'disabled':''}>${esc(o)}</button>${tallyLine}`;
+    }).join('');
+    const needsNameInput=!revealed && ROLE==='wisher' && !votedRiddles.has(r.id);
+    let below='';
+    if(revealed) below=`<div class="verdict ok">✓ Revealed by Namrata.</div>`;
+    else if(ROLE==='diva') below=`<div class="divehint">Tap the true answer to reveal it to everyone.</div>`;
+    else if(votedRiddles.has(r.id)) below=`<div class="verdict pending">Thanks — your vote is in. Namrata will reveal the answer soon.</div>`;
     return `
-    <div class="riddle">
+    <div class="riddle" data-riddle="${r.id}" data-i="${i}">
       <h4>${esc(r.question)}</h4>
       ${r.name?`<div class="by">Set by ${esc(r.name)}</div>`:''}
-      <div class="opts" data-i="${i}">${opts.map(o=>`<button class="ropt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
-      <div class="verdict" id="rv-${i}"></div>
+      ${needsNameInput?`<input class="votename" placeholder="Your name (optional)">`:''}
+      <div class="opts">${optsHtml}</div>
+      ${below}
     </div>`;
   }).join('');
-  box.querySelectorAll('.opts').forEach(host=>{
-    const i=+host.dataset.i;
-    host.querySelectorAll('.ropt').forEach(b=>b.onclick=()=>{
-      const isRight=b.dataset.val.trim().toLowerCase()===(data[i].answer||'').trim().toLowerCase();
-      host.querySelectorAll('.ropt').forEach(x=>{
-        x.disabled=true;
-        if(x.dataset.val.trim().toLowerCase()===(data[i].answer||'').trim().toLowerCase()) x.classList.add('right');
-        else if(x===b) x.classList.add('wrong');
-      });
-      const v=$('#rv-'+i);
-      if(isRight){ v.className='verdict ok'; v.textContent='✓ Correct. You know her.'; burst(30); }
-      else{ v.className='verdict no'; v.textContent='✗ Not it. Ask someone who\'s known her longer.'; }
+
+  box.querySelectorAll('.riddle').forEach(card=>{
+    const rid=card.dataset.riddle, i=+card.dataset.i;
+    const r=riddles[i];
+    const revealed=!!r.answer;
+    if(revealed) return;
+    card.querySelectorAll('.ropt').forEach(b=>b.onclick=async()=>{
+      if(ROLE==='diva'){
+        try{ await revealAnswer(rid,b.dataset.val); burst(60); toast('Answer revealed'); loadRiddles(); }
+        catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+        return;
+      }
+      if(votedRiddles.has(rid)) return;
+      const nameInput=card.querySelector('.votename');
+      const voterName=nameInput?nameInput.value.trim():'';
+      card.querySelectorAll('.ropt').forEach(x=>x.disabled=true);
+      try{
+        await castVote(rid,b.dataset.val,voterName);
+        votedRiddles.add(rid);
+        burst(30); loadRiddles();
+      }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
     });
   });
+}
+
+/* =====================================================================
+   REEL 5½ — ANONYMOUS COMPLIMENTS
+===================================================================== */
+$('#c-submit').onclick=async()=>{
+  const text=$('#c-text').value.trim();
+  if(!text){ toast('Write something first'); return; }
+  const btn=$('#c-submit'); btn.disabled=true; btn.textContent='Posting…';
+  try{
+    const {error}=await sb.from('compliments').insert({id:newId('c'),text});
+    if(error) throw error;
+    $('#c-text').value='';
+    burst(50); toast('Posted anonymously'); loadCompliments();
+  }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
+  btn.disabled=false; btn.textContent='Post it anonymously';
+};
+async function loadCompliments(){
+  const box=$('#compliments');
+  const {data,error}=await sb.from('compliments').select('*').order('created_at',{ascending:true});
+  if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
+  if(!data||!data.length){ box.innerHTML='<div class="empty">No compliments yet. Be the first, anonymously.</div>'; return; }
+  box.innerHTML=data.map(c=>`<div class="stickynote">${esc(c.text)}</div>`).join('');
 }
 
 /* ---------- konami → blooper ---------- */

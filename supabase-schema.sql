@@ -139,3 +139,56 @@ create policy "public insert traitphotos" on trait_photos for insert with check 
 -- MIGRATION 3: multiple-choice riddles (4 options, one correct)
 -- ============================================================
 alter table riddles add column if not exists options text[];
+
+-- ============================================================
+-- MIGRATION 4: reflection fields on cast cards, movie/animated
+-- character trait walls, riddle voting + Namrata's reveal,
+-- collaborative playlist, anonymous compliments.
+-- ============================================================
+
+-- three new reflections on each cast card
+alter table cast_entries add column if not exists met_story text;
+alter table cast_entries add column if not exists first_impression text;
+alter table cast_entries add column if not exists admire text;
+
+-- two new trait walls
+alter table cast_entries add column if not exists moviechar text;
+alter table cast_entries add column if not exists animatedchar text;
+
+-- riddles: the correct answer is no longer set at submission time —
+-- Namrata picks it later from the votes, so it must allow null
+alter table riddles alter column answer drop not null;
+-- and the anon key needs update rights so her "reveal" click can work
+create policy "public update riddles" on riddles for update using (true) with check (true);
+
+create table if not exists riddle_votes (
+  id text primary key,
+  riddle_id text references riddles(id) on delete cascade,
+  option_value text not null,
+  name text,
+  created_at timestamptz default now()
+);
+alter table riddle_votes enable row level security;
+create policy "public read riddle votes"   on riddle_votes for select using (true);
+create policy "public insert riddle votes" on riddle_votes for insert with check (true);
+
+create table if not exists playlist_songs (
+  id text primary key,
+  name text,
+  url text not null,
+  note text,
+  created_at timestamptz default now()
+);
+alter table playlist_songs enable row level security;
+create policy "public read playlist"   on playlist_songs for select using (true);
+create policy "public insert playlist" on playlist_songs for insert with check (true);
+
+-- anonymous by design: no name column at all
+create table if not exists compliments (
+  id text primary key,
+  text text not null,
+  created_at timestamptz default now()
+);
+alter table compliments enable row level security;
+create policy "public read compliments"   on compliments for select using (true);
+create policy "public insert compliments" on compliments for insert with check (true);

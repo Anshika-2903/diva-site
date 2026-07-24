@@ -119,13 +119,23 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .chapter.open{opacity:1;pointer-events:auto;filter:none}
 .locknote{font-family:var(--cond);letter-spacing:.18em;text-transform:uppercase;font-size:.66rem;color:var(--magenta)}
 
-/* timeline */
-.tl{position:relative;padding-left:30px;margin-top:34px}
-.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--marigold),var(--magenta),transparent)}
-.tl li{list-style:none;margin-bottom:30px;position:relative}
-.tl li::before{content:"";position:absolute;left:-30px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--marigold);box-shadow:0 0 0 4px rgba(245,166,35,.16)}
-.tl .yr{font-family:var(--display);color:var(--magenta);font-size:1.35rem}
-.tl p{font-size:.95rem;opacity:.8}
+/* filmstrip (reel one) */
+.filmstrip{display:flex;gap:22px;overflow-x:auto;overflow-y:visible;padding:36px 6px 26px;margin-top:10px;scroll-snap-type:x proximity}
+.filmstrip::-webkit-scrollbar{height:6px}
+.filmstrip::-webkit-scrollbar-thumb{background:rgba(232,200,122,.3);border-radius:99px}
+.filmframe{flex:0 0 210px;scroll-snap-align:start;background:var(--ink2);border-radius:8px;position:relative;
+  padding:22px 16px 20px;box-shadow:0 20px 45px rgba(0,0,0,.5);border:1px solid rgba(232,200,122,.18);
+  transform:rotate(var(--r,0deg));transition:transform .25s,box-shadow .25s}
+.filmframe:nth-child(odd){--r:-2.5deg}
+.filmframe:nth-child(even){--r:2deg}
+.filmframe:hover{transform:rotate(0deg) scale(1.05);z-index:2;box-shadow:0 28px 60px rgba(0,0,0,.65)}
+.filmframe .perf{position:absolute;left:8px;right:8px;height:11px;background-image:radial-gradient(circle,var(--ink) 3px,transparent 3.2px);background-size:18px 11px;background-repeat:repeat-x}
+.filmframe .perf.top{top:5px}
+.filmframe .perf.bottom{bottom:5px}
+.filmframe .slug{font-family:var(--cond);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);opacity:.7}
+.filmframe .yr{font-family:var(--display);color:var(--magenta);font-size:1.7rem;line-height:1;margin:6px 0 8px}
+.filmframe p{font-size:.88rem;opacity:.85}
+@media(max-width:620px){.filmstrip{padding-top:30px}}
 
 /* gallery */
 .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:30px}
@@ -270,14 +280,14 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch1"><div class="wrap">
     <div class="eyebrow">Reel one</div>
     <h2 class="reel">The <em>plot</em> so far</h2>
-    <p class="sub">Every year got exactly one line. Editing is an act of love.</p>
-    <ul class="tl">
-      <li><div class="yr">[YEAR]</div><p>[The year you met. One line. Make it specific — not "we became friends", but the actual moment.]</p></li>
-      <li><div class="yr">[YEAR]</div><p>[The trip / the fight / the 3am thing.]</p></li>
-      <li><div class="yr">[YEAR]</div><p>[The era she'd rather forget. Include it anyway.]</p></li>
-      <li><div class="yr">[YEAR]</div><p>[The win. The one she downplayed.]</p></li>
-      <li><div class="yr">[YEAR]</div><p>[This year. Leave it slightly unfinished.]</p></li>
-    </ul>
+    <p class="sub">Every year got exactly one frame. Scroll the reel — editing is an act of love.</p>
+    <div class="filmstrip">
+      <div class="filmframe"><div class="perf top"></div><div class="slug">Int. her life — [year]</div><div class="yr">[YEAR]</div><p>[The year you met. One line. Make it specific — not "we became friends", but the actual moment.]</p><div class="perf bottom"></div></div>
+      <div class="filmframe"><div class="perf top"></div><div class="slug">Int. her life — [year]</div><div class="yr">[YEAR]</div><p>[The trip / the fight / the 3am thing.]</p><div class="perf bottom"></div></div>
+      <div class="filmframe"><div class="perf top"></div><div class="slug">Int. her life — [year]</div><div class="yr">[YEAR]</div><p>[The era she'd rather forget. Include it anyway.]</p><div class="perf bottom"></div></div>
+      <div class="filmframe"><div class="perf top"></div><div class="slug">Int. her life — [year]</div><div class="yr">[YEAR]</div><p>[The win. The one she downplayed.]</p><div class="perf bottom"></div></div>
+      <div class="filmframe"><div class="perf top"></div><div class="slug">Int. her life — [year]</div><div class="yr">[YEAR]</div><p>[This year. Leave it slightly unfinished.]</p><div class="perf bottom"></div></div>
+    </div>
     <button class="btn" data-unlock="ch2" style="margin-top:24px">Roll reel two</button>
   </div></section>
 

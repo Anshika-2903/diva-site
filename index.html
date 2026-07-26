@@ -6,7 +6,7 @@
 <title>THE DIVA — A Film</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Oswald:wght@300;500;700&family=Karla:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,500;1,6..96,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Oswald:wght@300;500;700&family=Karla:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -17,7 +17,7 @@
   --marigold:#F5A623;
   --gold:#E8C87A;
   --cream:#FDF4E3;
-  --display:'Yatra One',system-ui,serif;
+  --display:'Bodoni Moda',Georgia,serif;
   --serif:'Fraunces',Georgia,serif;
   --cond:'Oswald',system-ui,sans-serif;
   --body:'Karla',system-ui,sans-serif;
@@ -40,8 +40,8 @@ canvas#petals{position:fixed;inset:0;pointer-events:none;z-index:3}
 
 /* ---------- shared bits ---------- */
 .eyebrow{font-family:var(--cond);font-weight:500;letter-spacing:.28em;text-transform:uppercase;font-size:.68rem;color:var(--marigold)}
-h2.reel{font-family:var(--display);font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;color:var(--cream);margin:.2em 0 .1em}
-h2.reel em{color:var(--magenta);font-style:normal}
+h2.reel{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.01em;color:var(--cream);margin:.2em 0 .1em}
+h2.reel em{color:var(--magenta);font-style:italic;font-weight:700}
 .sub{font-size:.95rem;opacity:.72;max-width:46ch}
 section{padding:88px 0;border-top:1px solid rgba(232,200,122,.16);position:relative}
 .btn{
@@ -116,6 +116,12 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .candle.out .flame{opacity:0;transform:translateX(-50%) scale(0)}
 .candle.out{filter:grayscale(.6);height:44px}
 #candlehint{font-family:var(--cond);letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;color:var(--gold);opacity:.8}
+
+/* ---------- birthday video collage (her entrance only) ---------- */
+#bdaycollage{position:fixed;inset:0;z-index:70;background:radial-gradient(circle at 50% 40%,#3A1526,var(--ink) 75%);display:none;align-items:center;justify-content:center;flex-direction:column;padding:26px;text-align:center;gap:20px}
+.bdaytitle{font-family:var(--display);font-style:italic;font-weight:600;font-size:clamp(1.7rem,6vw,2.8rem);color:var(--marigold);text-shadow:3px 3px 0 var(--maroon)}
+.bdaygrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;max-width:760px;width:100%;max-height:60vh;overflow:hidden}
+.bdaygrid video{width:100%;height:100%;max-height:220px;object-fit:cover;border-radius:12px;border:2px solid var(--gold);box-shadow:0 10px 26px rgba(0,0,0,.5)}
 
 /* ---------- MAIN ---------- */
 #film{display:none}
@@ -340,6 +346,9 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <p id="candlehint">Make a wish, then blow</p>
   <button class="btn" id="blowbtn" style="margin-top:18px">Blow out the candles</button>
 </div>
+
+<!-- ============ HER ENTRANCE: VIDEO WISHES ============ -->
+<div id="bdaycollage"></div>
 
 <!-- ============ FILM ============ -->
 <main id="film">
@@ -751,8 +760,12 @@ $('#blowbtn').onclick=()=>{
 };
 
 /* ---------- enter film ---------- */
-function enterFilm(){
+async function enterFilm(){
   $('#candles').style.display='none';
+  if(ROLE==='diva'){
+    const {data}=await sb.from('cast_entries').select('clip_url');
+    await showBirthdayCollage((data||[]).map(e=>e.clip_url));
+  }
   $('#film').style.display='block';
   burst(140);
   $$('.chapter').forEach(c=>c.classList.add('open'));
@@ -979,7 +992,7 @@ async function loadCast(){
   const {data:entries,error}=await sb.from('cast_entries').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Cast list is taking a moment. Refresh to try again.</div>'; return; }
   CAST=entries||[];
-  renderPhotoWall(CAST.flatMap(e=>e.photo_urls||[]), CAST.map(e=>e.clip_url));
+  renderPhotoWall(CAST.flatMap(e=>e.photo_urls||[]));
   loadTraitWalls();
   if(!CAST.length){ box.innerHTML='<div class="empty">No cast yet. Whoever opens this first, goes first.</div>'; return; }
   box.innerHTML='<div class="cards">'+CAST.map((e,i)=>`
@@ -1030,15 +1043,31 @@ function placeInWall(el,w){
   el.style.left=(Math.random()*90)+'%'; el.style.top=(Math.random()*90)+'%';
   el.style.transform=`rotate(${(Math.random()*24-12).toFixed(1)}deg)`;
 }
-function renderPhotoWall(photoUrls,clipUrls){
+function renderPhotoWall(photoUrls){
   const wall=$('#photowall'); wall.innerHTML='';
   photoUrls.filter(Boolean).slice(0,14).forEach(u=>{
     const img=document.createElement('img'); img.src=u; img.loading='lazy'; img.alt='';
     placeInWall(img,140+Math.random()*90); wall.appendChild(img);
   });
-  (clipUrls||[]).filter(Boolean).slice(0,6).forEach(u=>{
-    const v=document.createElement('video'); v.src=u; v.autoplay=true; v.loop=true; v.muted=true; v.playsInline=true;
-    placeInWall(v,150+Math.random()*80); wall.appendChild(v);
+}
+
+/* ---------- her entrance: video wishes play once, with sound ---------- */
+function showBirthdayCollage(clipUrls){
+  return new Promise(resolve=>{
+    const clips=(clipUrls||[]).filter(Boolean);
+    if(!clips.length) return resolve();
+    const wall=$('#bdaycollage');
+    wall.innerHTML=`<div class="bdaytitle">Happy birthday, Namrata! 🎂</div>
+      <div class="bdaygrid">${clips.slice(0,9).map(u=>`<video src="${u}" playsinline></video>`).join('')}</div>`;
+    wall.style.display='flex';
+    burst(200);
+    const vids=$$('#bdaycollage video');
+    vids.forEach(v=>{ v.muted=false; v.volume=0.85; v.loop=true; v.play().catch(()=>{}); });
+    setTimeout(()=>{
+      vids.forEach(v=>v.pause());
+      wall.style.display='none'; wall.innerHTML='';
+      resolve();
+    },6000);
   });
 }
 

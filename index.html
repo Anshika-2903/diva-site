@@ -211,6 +211,10 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .bubble .revealbtn{background:none;border:0;color:var(--gold);cursor:pointer;font-size:.7rem;font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;margin-top:10px;padding:0;display:block}
 .bubble .revealbtn:hover{color:var(--marigold)}
 .bubble .attrib{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:8px}
+.namereveal{background:none;border:0;color:var(--gold);cursor:pointer;font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:.58rem;padding:0;opacity:.8}
+.namereveal:hover{color:var(--marigold)}
+.namewho{display:none;font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-left:6px}
+.namewho.show{display:inline}
 
 /* playlist */
 .playlist{display:grid;gap:14px;margin-top:26px}
@@ -221,14 +225,15 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 
 /* anonymous compliments */
 .compliments{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:26px}
-.stickynote{background:linear-gradient(160deg,var(--marigold),#e0a13d);color:var(--ink);border-radius:4px;padding:18px;position:relative;
+.stickynote{background:linear-gradient(160deg,#F2C9D6,#E8A9C2);color:var(--maroon);border-radius:4px;padding:18px;position:relative;
   font-family:var(--serif);font-style:italic;font-size:.98rem;transform:rotate(var(--r,0deg));box-shadow:0 12px 26px rgba(0,0,0,.4);transition:.2s}
 .stickynote:hover{transform:rotate(0deg) scale(1.03)}
-.stickynote:nth-child(3n){background:linear-gradient(160deg,var(--gold),#cdae6c)}
+.stickynote:nth-child(3n){background:linear-gradient(160deg,#FDEBD3,#F3D2A0)}
+.stickynote:nth-child(3n+2){background:linear-gradient(160deg,#D9C7F0,#C3A6E8)}
 .stickynote:nth-child(3n+1){--r:-2.5deg}
 .stickynote:nth-child(3n+2){--r:2deg}
 .stickynote:nth-child(3n){--r:-1deg}
-.stickynote .delbtn{color:var(--ink);border-color:rgba(26,11,20,.3);background:rgba(255,255,255,.3)}
+.stickynote .delbtn{color:var(--maroon);border-color:rgba(123,18,48,.3);background:rgba(255,255,255,.35)}
 
 /* time capsule */
 .capsule-locked{border:2px dashed rgba(232,200,122,.35);border-radius:16px;padding:40px 24px;text-align:center;margin-top:26px}
@@ -237,8 +242,9 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .capsule-locked .count{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--gold);opacity:.75;margin-top:8px}
 .capsule-open{margin-top:26px}
 .capsule-open .capheader{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--marigold);margin-bottom:14px}
-.capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;white-space:pre-wrap;font-family:var(--serif);position:relative}
-.capnote .capwho{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--gold);margin-top:10px;white-space:normal}
+.capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;font-family:var(--serif);position:relative}
+.capnote .capfrom{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.6rem;color:var(--marigold);border-bottom:1px dashed rgba(232,200,122,.28);padding-bottom:10px;margin-bottom:12px}
+.capnote .capbody{white-space:pre-wrap}
 
 /* shared bucket list */
 .bucketlist{display:grid;gap:10px;margin-top:26px}
@@ -267,7 +273,6 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .riddle .verdict.ok{color:#5ab97a}
 .riddle .verdict.no{color:var(--magenta)}
 .riddle .verdict.pending{color:var(--gold)}
-.riddle .votename{max-width:220px;margin-bottom:10px}
 .riddle .divehint{font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;font-size:.66rem;color:var(--gold);opacity:.8;margin-bottom:10px}
 
 /* letter */
@@ -318,7 +323,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     <div class="divider"><span>🎂</span></div>
     <div class="details">
       Directed by <b>Her Friends</b><br>
-      Runtime · <b>[AGE] glorious years</b><br>
+      Runtime · <b>23 glorious years</b><br>
       Certificate · <b>A+ for Attitude</b><br>
       Dress code · <b>Come as you are</b>
     </div>
@@ -401,8 +406,6 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <div class="stat"><div class="n">847</div><div class="l">times she said "leaving in 5 mins"</div></div>
       <div class="stat"><div class="n">12</div><div class="l">outfits tried before leaving</div></div>
       <div class="stat"><div class="n">0</div><div class="l">arguments conceded</div></div>
-      <div class="stat"><div class="n">3:47am</div><div class="l">peak texting hour</div></div>
-      <div class="stat"><div class="n">∞</div><div class="l">plans cancelled, forgiven anyway</div></div>
     </div>
 
     <div class="miniform" id="numform" style="display:none">
@@ -467,10 +470,10 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
       <label for="w-video">Your video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(YouTube / Drive / Instagram link)</span></label>
       <input id="w-video" placeholder="https://…">
 
-      <label for="w-clip">Or upload a short video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(~10 seconds, say something!)</span></label>
+      <label for="w-clip">Or upload a short video wish <span style="opacity:.5;text-transform:none;letter-spacing:0">(~10 seconds — look at the camera and say happy birthday!)</span></label>
       <input type="file" id="w-clip" accept="video/*">
       <video id="w-clip-preview" muted controls style="display:none;width:100%;max-width:280px;border-radius:8px;margin-top:10px"></video>
-      <p style="font-size:.75rem;opacity:.5;margin-top:6px">Plays silently in everyone's background — but with sound on your card.</p>
+      <p style="font-size:.75rem;opacity:.5;margin-top:6px">Plays on your card, and joins everyone else's in her big entrance moment.</p>
 
       <label>Voice note <span style="opacity:.5;text-transform:none;letter-spacing:0">(up to 30 seconds)</span></label>
       <div class="recwrap">
@@ -697,21 +700,46 @@ document.addEventListener('click', async e=>{
   if(RELOAD[table]) RELOAD[table]();
 }, true);
 
+/* ---------- who wrote it: hidden behind an arrow, revealed on tap ---------- */
+function nameReveal(label,name){
+  if(!name) return '';
+  return `<button class="namereveal" type="button" data-label="${esc(label)}">▾ ${esc(label)}</button><span class="namewho">${esc(name)}</span>`;
+}
+document.addEventListener('click', e=>{
+  const b=e.target.closest('.namereveal'); if(!b) return;
+  e.stopPropagation();
+  const span=b.nextElementSibling;
+  const isOpen=span.classList.contains('show');
+  span.classList.toggle('show');
+  b.textContent=(isOpen?'▾':'▴')+' '+b.dataset.label;
+}, true);
+
 /* ---------- petals (confetti, but marigold) ---------- */
 const cv=$('#petals'), cx=cv.getContext('2d'); let petals=[];
 function size(){ cv.width=innerWidth; cv.height=innerHeight; } size(); addEventListener('resize',size);
-function burst(n=60){
+function burst(n=60,emojis){
   if(reduce) return;
-  for(let i=0;i<n;i++) petals.push({x:Math.random()*cv.width,y:-20-Math.random()*200,r:4+Math.random()*7,
-    s:1+Math.random()*2.4,a:Math.random()*6.28,va:(Math.random()-.5)*.12,
-    c:['#F5A623','#D6246E','#E8C87A','#FDF4E3'][Math.floor(Math.random()*4)]});
+  for(let i=0;i<n;i++){
+    const p={x:Math.random()*cv.width,y:-20-Math.random()*200,r:4+Math.random()*7,
+      s:1+Math.random()*2.4,a:Math.random()*6.28,va:(Math.random()-.5)*.12,
+      c:['#F5A623','#D6246E','#E8C87A','#FDF4E3'][Math.floor(Math.random()*4)]};
+    if(emojis&&emojis.length){ p.emoji=emojis[Math.floor(Math.random()*emojis.length)]; p.r=9+Math.random()*9; }
+    petals.push(p);
+  }
+}
+/* a bigger, cuter celebration for the candle-blow moment: confetti + flowers/hearts/sparkles */
+function bigBurst(){
+  burst(90);
+  burst(70,['🌸','🎉','💛','✨','🎊','💖']);
 }
 function loop(){
   cx.clearRect(0,0,cv.width,cv.height);
   petals=petals.filter(p=>p.y<cv.height+30);
   petals.forEach(p=>{ p.y+=p.s; p.x+=Math.sin(p.y/40)*.7; p.a+=p.va;
-    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a); cx.fillStyle=p.c; cx.globalAlpha=.85;
-    cx.beginPath(); cx.ellipse(0,0,p.r,p.r*.55,0,0,6.28); cx.fill(); cx.restore(); });
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
+    if(p.emoji){ cx.font=(p.r*2)+'px sans-serif'; cx.textAlign='center'; cx.textBaseline='middle'; cx.globalAlpha=.92; cx.fillText(p.emoji,0,0); }
+    else{ cx.fillStyle=p.c; cx.globalAlpha=.85; cx.beginPath(); cx.ellipse(0,0,p.r,p.r*.55,0,0,6.28); cx.fill(); }
+    cx.restore(); });
   requestAnimationFrame(loop);
 } loop();
 
@@ -773,7 +801,7 @@ async function enterFilm(){
     await showBirthdayCollage((data||[]).map(e=>e.clip_url));
   }
   $('#film').style.display='block';
-  burst(140);
+  bigBurst();
   $$('.chapter').forEach(c=>c.classList.add('open'));
   const isWisher=ROLE==='wisher';
   ['stillform','numform','wisherform','dlgform','playlistform','riddleform','complimentform','capsuleform'].forEach(id=>{
@@ -877,7 +905,7 @@ async function loadStills(){
   const {data,error}=await sb.from('her_stills').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Gallery is taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No stills yet.</div>'; return; }
-  box.innerHTML=data.map(s=>`<figure>${delBtn('her_stills',s.id)}<img src="${s.photo_url}" alt="${esc(s.caption||'photo of her')}">${(s.caption||s.name)?`<figcaption>${esc(s.caption||'')}${s.name?`<br><span style="opacity:.7;font-size:.7rem">— ${esc(s.name)}</span>`:''}</figcaption>`:''}</figure>`).join('');
+  box.innerHTML=data.map(s=>`<figure>${delBtn('her_stills',s.id)}<img src="${s.photo_url}" alt="${esc(s.caption||'photo of her')}">${(s.caption||s.name)?`<figcaption>${esc(s.caption||'')}${s.name?`<br>${nameReveal('who added this',s.name)}`:''}</figcaption>`:''}</figure>`).join('');
 }
 RELOAD.her_stills=loadStills;
 
@@ -905,7 +933,7 @@ async function loadNumbers(){
   if(error||!data) return;
   data.forEach(s=>{
     const d=document.createElement('div'); d.className='stat mine';
-    d.innerHTML=`${delBtn('box_numbers',s.id)}<div class="n">${esc(s.num)}</div><div class="l">${esc(s.label)}${s.name?` · ${esc(s.name)}`:''}</div>`;
+    d.innerHTML=`${delBtn('box_numbers',s.id)}<div class="n">${esc(s.num)}</div><div class="l">${esc(s.label)}${s.name?` ${nameReveal('who added this',s.name)}`:''}</div>`;
     grid.appendChild(d);
   });
 }
@@ -1090,7 +1118,7 @@ function showBirthdayCollage(clipUrls){
     wall.innerHTML=`<div class="bdaytitle">Happy birthday, Namrata! 🎂</div>
       <div class="bdaygrid">${clips.slice(0,9).map(u=>`<video src="${u}" playsinline></video>`).join('')}</div>`;
     wall.style.display='flex';
-    burst(200);
+    bigBurst();
     const vids=$$('#bdaycollage video');
     vids.forEach(v=>{ v.muted=false; v.volume=0.85; v.loop=true; v.play().catch(()=>{}); });
     setTimeout(()=>{
@@ -1130,8 +1158,8 @@ function openWall(trait){
   const label=TRAIT_NAMES[trait];
   let body=`<div class="mhead"><div><div class="mname">${TRAITS[trait]} The ${label} wall</div>
     <div class="mbilled">If Namrata were a ${label}…</div></div></div>`;
-  if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure>${delBtn('trait_photos',p.id,`data-trait="${trait}"`)}<img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` · ${esc(p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
-  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}<i>— ${esc(w.name||'Anonymous')}</i>${delBtn('trait_photos',w.id,`data-trait="${trait}" class="delbtn inline"`)}</span>`).join('')}</div>`;
+  if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure>${delBtn('trait_photos',p.id,`data-trait="${trait}"`)}<img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` ${nameReveal('who chose this',p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
+  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}${w.name?nameReveal('who chose this',w.name):''}${delBtn('trait_photos',w.id,`data-trait="${trait}" class="delbtn inline"`)}</span>`).join('')}</div>`;
   const canAdd=ROLE!=='diva';
   if(!d.photos.length && !d.words.length) body+=`<p style="opacity:.6;margin-top:16px">${canAdd?'Nothing on this wall yet. Add the first below.':'Nothing on this wall yet.'}</p>`;
   if(canAdd) body+=`
@@ -1227,7 +1255,7 @@ async function loadPlaylist(){
       ${delBtn('playlist_songs',s.id)}
       ${embedSong(s.url)}
       ${s.note?`<div class="note">"${esc(s.note)}"</div>`:''}
-      ${s.name?`<div class="who">Added by ${esc(s.name)}</div>`:''}
+      ${s.name?`<div class="who">${nameReveal('who added this',s.name)}</div>`:''}
     </div>`).join('');
 }
 RELOAD.playlist_songs=loadPlaylist;
@@ -1284,10 +1312,9 @@ async function loadRiddles(){
       const isCorrect=revealed && o.trim().toLowerCase()===r.answer.trim().toLowerCase();
       const showTally=revealed||ROLE==='diva';
       const cls='ropt'+(isCorrect?' right':'');
-      const tallyLine=showTally?`<span class="tally">${names.length} vote${names.length!==1?'s':''}${names.length?': '+names.map(esc).join(', '):''}</span>`:'';
+      const tallyLine=showTally?`<span class="tally">${names.length} vote${names.length!==1?'s':''}</span>`:'';
       return `<button class="${cls}" data-val="${esc(o)}" ${optsLocked?'disabled':''}>${esc(o)}</button>${tallyLine}`;
     }).join('');
-    const needsNameInput=!revealed && ROLE==='wisher' && !votedRiddles.has(r.id);
     let below='';
     if(revealed) below=`<div class="verdict ok">✓ Revealed by Namrata.</div>`;
     else if(ROLE==='diva') below=`<div class="divehint">Tap the true answer to reveal it to everyone.</div>`;
@@ -1296,8 +1323,7 @@ async function loadRiddles(){
     <div class="riddle" data-riddle="${r.id}" data-i="${i}">
       ${delBtn('riddles',r.id)}
       <h4>${esc(r.question)}</h4>
-      ${r.name?`<div class="by">Set by ${esc(r.name)}</div>`:''}
-      ${needsNameInput?`<input class="votename" placeholder="Your name (optional)">`:''}
+      ${r.name?`<div class="by">${nameReveal('who set this riddle',r.name)}</div>`:''}
       <div class="opts">${optsHtml}</div>
       ${below}
     </div>`;
@@ -1315,11 +1341,9 @@ async function loadRiddles(){
         return;
       }
       if(votedRiddles.has(rid)) return;
-      const nameInput=card.querySelector('.votename');
-      const voterName=nameInput?nameInput.value.trim():'';
       card.querySelectorAll('.ropt').forEach(x=>x.disabled=true);
       try{
-        await castVote(rid,b.dataset.val,voterName);
+        await castVote(rid,b.dataset.val,'');
         votedRiddles.add(rid);
         burst(30); loadRiddles();
       }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1393,7 +1417,7 @@ async function loadCapsule(){
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">The capsule opened — but nobody left anything.</div>'; return; }
   box.innerHTML=`<div class="capsule-open"><div class="capheader">Opened at last. Here's what was waiting.</div>`+
-    data.map(c=>`<div class="capnote">${delBtn('time_capsule',c.id)}${esc(c.note)}${c.name?`<div class="capwho">— ${esc(c.name)}</div>`:''}</div>`).join('')+`</div>`;
+    data.map(c=>`<div class="capnote">${delBtn('time_capsule',c.id)}<div class="capfrom">✉ Kept by ${esc(c.name||'Anonymous')}</div><div class="capbody">${esc(c.note)}</div></div>`).join('')+`</div>`;
 }
 RELOAD.time_capsule=loadCapsule;
 
@@ -1423,7 +1447,7 @@ async function loadBucketList(){
     <div class="bucketitem${b.done?' done':''}" data-i="${i}">
       ${delBtn('bucket_list',b.id)}
       <div class="box">${b.done?'✓':''}</div>
-      <div class="txt">${esc(b.item)}${b.name?`<div class="who">Added by ${esc(b.name)}</div>`:''}</div>
+      <div class="txt">${esc(b.item)}${b.name?`<div class="who">${nameReveal('who added this',b.name)}</div>`:''}</div>
     </div>`).join('');
   box.querySelectorAll('.bucketitem').forEach(el=>el.onclick=async()=>{
     const b=data[+el.dataset.i];

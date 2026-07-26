@@ -281,10 +281,6 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .creditrow .cname{font-family:var(--cond);font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-size:.76rem;color:var(--cream);white-space:nowrap}
 .creditrow .cdots{flex:1;border-bottom:1px dotted rgba(232,200,122,.35);transform:translateY(-5px)}
 .creditrow .crole{font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:.76rem;color:var(--marigold);white-space:nowrap;text-align:right}
-#letter{min-height:220px;font-size:1.05rem;white-space:pre-wrap;max-width:52ch;margin:30px auto 0;text-align:left;font-family:var(--serif)}
-#letter::after{content:"▌";color:var(--magenta);animation:blink .7s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.done #letter::after{display:none}
 
 /* multi-photo preview grid */
 .preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-top:10px}
@@ -631,7 +627,6 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     <div class="eyebrow">Last reel</div>
     <h2 class="reel">The <em>end</em> credits</h2>
     <div class="credits-roll" id="creditsroll"></div>
-    <div id="letter"></div>
   </div></section>
 
   <footer>An amateur production · Made by people who like you a normal amount</footer>
@@ -658,8 +653,7 @@ const CONFIG = {
     "Ready."
   ],
   candleCount: 5,
-  capsuleUnlock: "2027-07-29",   // her next birthday after this one — change if the date's wrong
-  letter: `Namrata,\n\n[Write it badly on purpose. Say the specific thing you'd never say out loud.]\n\n[One line about who she was when you met her.]\n\n[One line about who she is now.]\n\n[Then stop. Don't explain it.]\n\nHappy birthday, diva.\n— [YOU]`
+  capsuleUnlock: "2027-07-29"   // her next birthday after this one — change if the date's wrong
 };
 /* ================================================================ */
 
@@ -1458,16 +1452,12 @@ addEventListener('keydown',e=>{
   else kpos=0;
 });
 
-/* ---------- typing letter ---------- */
-let typed=false;
+/* ---------- end credits finale ---------- */
+let finaled=false;
 new IntersectionObserver(es=>{
   es.forEach(e=>{
-    if(e.isIntersecting && !typed && $('#ch8').classList.contains('open')){
-      typed=true; let i=0; const el=$('#letter');
-      const t=setInterval(()=>{
-        el.textContent=CONFIG.letter.slice(0,i++);
-        if(i>CONFIG.letter.length){ clearInterval(t); document.body.classList.add('done'); burst(120); stopMusic(); }
-      },reduce?1:38);
+    if(e.isIntersecting && !finaled && $('#ch8').classList.contains('open')){
+      finaled=true; document.body.classList.add('done'); burst(120); stopMusic();
     }
   });
 },{threshold:.4}).observe($('#ch8'));

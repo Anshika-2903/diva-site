@@ -226,3 +226,35 @@ alter table bucket_list enable row level security;
 create policy "public read bucket list"   on bucket_list for select using (true);
 create policy "public insert bucket list" on bucket_list for insert with check (true);
 create policy "public update bucket list" on bucket_list for update using (true) with check (true);
+
+-- ============================================================
+-- MIGRATION 7: let each wisher delete their own entries
+-- owner_key is a random token generated in the browser at
+-- submit time and remembered only in that browser's
+-- localStorage — there's no real login system on this site,
+-- so this hides the delete button from everyone else in the
+-- UI, but doesn't cryptographically stop API access. Same
+-- trust model as everything else here (e.g. the "diva" role
+-- toggle isn't real auth either).
+-- ============================================================
+alter table her_stills     add column if not exists owner_key text;
+alter table box_numbers    add column if not exists owner_key text;
+alter table cast_entries   add column if not exists owner_key text;
+alter table dialogues      add column if not exists owner_key text;
+alter table playlist_songs add column if not exists owner_key text;
+alter table riddles        add column if not exists owner_key text;
+alter table trait_photos   add column if not exists owner_key text;
+alter table compliments    add column if not exists owner_key text;
+alter table time_capsule   add column if not exists owner_key text;
+alter table bucket_list    add column if not exists owner_key text;
+
+create policy "public delete stills"       on her_stills     for delete using (true);
+create policy "public delete numbers"      on box_numbers    for delete using (true);
+create policy "public delete cast"         on cast_entries   for delete using (true);
+create policy "public delete dialogues"    on dialogues      for delete using (true);
+create policy "public delete playlist"     on playlist_songs for delete using (true);
+create policy "public delete riddles"      on riddles        for delete using (true);
+create policy "public delete traitphotos"  on trait_photos   for delete using (true);
+create policy "public delete compliments"  on compliments    for delete using (true);
+create policy "public delete time capsule" on time_capsule   for delete using (true);
+create policy "public delete bucket list"  on bucket_list    for delete using (true);

@@ -65,6 +65,11 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 @media(max-width:620px){.field-row{grid-template-columns:1fr}}
 .miniform{margin-top:26px;background:var(--ink2);border:1px solid rgba(232,200,122,.24);border-radius:14px;padding:20px}
 
+/* delete-own-entry button */
+.delbtn{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;border:1px solid rgba(232,200,122,.4);background:rgba(26,11,20,.85);color:var(--gold);font-size:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:.15s;line-height:1}
+.delbtn:hover{background:var(--magenta);border-color:var(--magenta);color:var(--cream)}
+.delbtn.inline{position:static;display:inline-flex;width:16px;height:16px;margin-left:4px;font-size:.55rem;vertical-align:middle}
+
 /* ---------- 1. TICKET / ENTRY (invitation card) ---------- */
 #gate{position:fixed;inset:0;z-index:50;background:radial-gradient(circle at 50% 0%,#3A1526,var(--ink) 70%);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
 .invite{
@@ -137,7 +142,7 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:32px}
-.stat{background:linear-gradient(160deg,rgba(214,36,110,.16),rgba(245,166,35,.06));border:1px solid rgba(232,200,122,.25);border-radius:12px;padding:20px}
+.stat{background:linear-gradient(160deg,rgba(214,36,110,.16),rgba(245,166,35,.06));border:1px solid rgba(232,200,122,.25);border-radius:12px;padding:20px;position:relative}
 .stat .n{font-family:var(--display);font-size:2.3rem;color:var(--marigold);line-height:1}
 .stat .l{font-family:var(--cond);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-top:6px}
 .stat.mine{border-color:var(--magenta)}
@@ -197,24 +202,27 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .bubble{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:16px 16px 16px 4px;padding:18px 20px;position:relative}
 .bubble .quote{font-family:var(--serif);font-style:italic;font-size:1.12rem;color:var(--cream);line-height:1.4}
 .bubble .quote::before{content:"“";color:var(--magenta);font-size:1.6rem;margin-right:2px}
-.bubble .attrib{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:10px}
+.bubble .revealbtn{background:none;border:0;color:var(--gold);cursor:pointer;font-size:.7rem;font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;margin-top:10px;padding:0;display:block}
+.bubble .revealbtn:hover{color:var(--marigold)}
+.bubble .attrib{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:8px}
 
 /* playlist */
 .playlist{display:grid;gap:14px;margin-top:26px}
-.songcard{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:16px}
+.songcard{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:16px;position:relative}
 .songcard iframe{width:100%;border:0;border-radius:8px}
 .songcard .note{font-family:var(--serif);font-style:italic;opacity:.85;margin-top:10px}
 .songcard .who{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.58rem;color:var(--marigold);margin-top:8px}
 
 /* anonymous compliments */
 .compliments{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:26px}
-.stickynote{background:linear-gradient(160deg,var(--marigold),#e0a13d);color:var(--ink);border-radius:4px;padding:18px;
+.stickynote{background:linear-gradient(160deg,var(--marigold),#e0a13d);color:var(--ink);border-radius:4px;padding:18px;position:relative;
   font-family:var(--serif);font-style:italic;font-size:.98rem;transform:rotate(var(--r,0deg));box-shadow:0 12px 26px rgba(0,0,0,.4);transition:.2s}
 .stickynote:hover{transform:rotate(0deg) scale(1.03)}
 .stickynote:nth-child(3n){background:linear-gradient(160deg,var(--gold),#cdae6c)}
 .stickynote:nth-child(3n+1){--r:-2.5deg}
 .stickynote:nth-child(3n+2){--r:2deg}
 .stickynote:nth-child(3n){--r:-1deg}
+.stickynote .delbtn{color:var(--ink);border-color:rgba(26,11,20,.3);background:rgba(255,255,255,.3)}
 
 /* time capsule */
 .capsule-locked{border:2px dashed rgba(232,200,122,.35);border-radius:16px;padding:40px 24px;text-align:center;margin-top:26px}
@@ -223,12 +231,12 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .capsule-locked .count{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--gold);opacity:.75;margin-top:8px}
 .capsule-open{margin-top:26px}
 .capsule-open .capheader{font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem;color:var(--marigold);margin-bottom:14px}
-.capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;white-space:pre-wrap;font-family:var(--serif)}
+.capnote{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:18px;margin-bottom:14px;white-space:pre-wrap;font-family:var(--serif);position:relative}
 .capnote .capwho{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--gold);margin-top:10px;white-space:normal}
 
 /* shared bucket list */
 .bucketlist{display:grid;gap:10px;margin-top:26px}
-.bucketitem{display:flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s}
+.bucketitem{display:flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;position:relative}
 .bucketitem:hover{border-color:var(--magenta)}
 .bucketitem .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--gold);flex:0 0 20px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--marigold)}
 .bucketitem .txt{flex:1}
@@ -236,10 +244,11 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .bucketitem.done{opacity:.55}
 .bucketitem.done .txt{text-decoration:line-through}
 .bucketitem.done .box{background:var(--marigold);border-color:var(--marigold);color:var(--ink)}
+.bucketitem .delbtn{top:50%;transform:translateY(-50%)}
 
 /* riddles */
 .riddlelist{display:grid;gap:16px;margin-top:26px}
-.riddle{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:20px}
+.riddle{background:var(--ink2);border:1px solid rgba(232,200,122,.22);border-radius:14px;padding:20px;position:relative}
 .riddle h4{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin-bottom:4px}
 .riddle .by{font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;color:var(--marigold);margin-bottom:12px}
 .riddle .ropt{display:block;width:100%;text-align:left;background:rgba(253,244,227,.04);border:1px solid rgba(232,200,122,.22);color:var(--cream);padding:11px 14px;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--body);font-size:.9rem;transition:.15s}
@@ -433,22 +442,8 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
         <option value="3">★★★☆☆</option><option value="2">★★☆☆☆</option><option value="1">★☆☆☆☆ (be brave)</option>
       </select>
 
-      <label for="w-roast">One incident you'll never let her forget</label>
-      <textarea id="w-roast" rows="2" placeholder="The night she..."></textarea>
-
-      <div class="eyebrow" style="margin-top:26px">If she were a…</div>
-      <div class="field-row">
-        <div><label for="w-flower">A flower</label><input id="w-flower" placeholder="marigold, obviously"></div>
-        <div><label for="w-weather">Weather</label><input id="w-weather" placeholder="a heatwave with opinions"></div>
-      </div>
-      <div class="field-row">
-        <div><label for="w-color">A colour</label><input id="w-color" placeholder="fuchsia, no debate"></div>
-        <div><label for="w-song">A song</label><input id="w-song" placeholder="the one that plays when she enters"></div>
-      </div>
-      <div class="field-row">
-        <div><label for="w-moviechar">A movie character</label><input id="w-moviechar" placeholder="the lead, obviously"></div>
-        <div><label for="w-animatedchar">An animated character</label><input id="w-animatedchar" placeholder="chaotic Disney princess energy"></div>
-      </div>
+      <label for="w-roast">Your best memory of her, or with her</label>
+      <textarea id="w-roast" rows="2" placeholder="The time we..."></textarea>
 
       <label for="w-photo">Photos of you with Namrata <span style="opacity:.5;text-transform:none;letter-spacing:0">(add as many as you like)</span></label>
       <input type="file" id="w-photo" accept="image/*" multiple>
@@ -485,11 +480,9 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
     <p class="sub" id="wallsub">Tap a wall to open its collage and see who chose what.</p>
     <div class="wallset">
       <div class="wallgroup" data-trait="flower"><div class="ic">🌸</div><h4>The flower wall</h4><div class="cnt" id="cnt-flower">tap to open</div><div class="peek" id="peek-flower"></div></div>
-      <div class="wallgroup" data-trait="weather"><div class="ic">☁️</div><h4>The weather wall</h4><div class="cnt" id="cnt-weather">tap to open</div><div class="peek" id="peek-weather"></div></div>
       <div class="wallgroup" data-trait="color"><div class="ic">🎨</div><h4>The colour wall</h4><div class="cnt" id="cnt-color">tap to open</div><div class="peek" id="peek-color"></div></div>
       <div class="wallgroup" data-trait="song"><div class="ic">🎵</div><h4>The song wall</h4><div class="cnt" id="cnt-song">tap to open</div><div class="peek" id="peek-song"></div></div>
-      <div class="wallgroup" data-trait="moviechar"><div class="ic">🎬</div><h4>The movie character wall</h4><div class="cnt" id="cnt-moviechar">tap to open</div><div class="peek" id="peek-moviechar"></div></div>
-      <div class="wallgroup" data-trait="animatedchar"><div class="ic">🧸</div><h4>The animated character wall</h4><div class="cnt" id="cnt-animatedchar">tap to open</div><div class="peek" id="peek-animatedchar"></div></div>
+      <div class="wallgroup" data-trait="character"><div class="ic">🎭</div><h4>The character wall</h4><div class="cnt" id="cnt-character">tap to open</div><div class="peek" id="peek-character"></div></div>
     </div>
     <button class="btn" data-unlock="ch4" style="margin-top:28px">Roll reel four</button>
   </div></section>
@@ -666,6 +659,29 @@ const DEFAULT_AV = "data:image/svg+xml;utf8," + encodeURIComponent(
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
 function esc(s){ return (s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])); }
 
+/* ---------- delete-your-own-entry (owner key remembered in this browser only) ---------- */
+function ownerKeyStore(){ try{ return JSON.parse(localStorage.getItem('divaOwnerKeys')||'{}'); }catch(e){ return {}; } }
+function saveOwnerKey(table,id,key){ const s=ownerKeyStore(); s[table+':'+id]=key; localStorage.setItem('divaOwnerKeys',JSON.stringify(s)); }
+function myOwnerKey(table,id){ return ownerKeyStore()[table+':'+id]; }
+function newOwnerKey(){ return 'k'+Math.random().toString(36).slice(2)+Date.now().toString(36); }
+function delBtn(table,id,extraAttrs){ return myOwnerKey(table,id) ? `<button class="delbtn" data-table="${table}" data-id="${id}" ${extraAttrs||''} title="Delete your entry">✕</button>` : ''; }
+async function deleteEntry(table,id){
+  if(!confirm("Delete this entry? This can't be undone.")) return false;
+  const {error}=await sb.from(table).delete().eq('id',id);
+  if(error){ toast('Error: '+(error.message||JSON.stringify(error))); return false; }
+  toast('Deleted'); return true;
+}
+const RELOAD={};
+document.addEventListener('click', async e=>{
+  const b=e.target.closest('.delbtn'); if(!b) return;
+  e.stopPropagation();
+  const table=b.dataset.table, id=b.dataset.id;
+  const ok=await deleteEntry(table,id);
+  if(!ok) return;
+  if(table==='trait_photos'){ await loadTraitWalls(); const trait=b.dataset.trait; if(trait) openWall(trait); return; }
+  if(RELOAD[table]) RELOAD[table]();
+}, true);
+
 /* ---------- petals (confetti, but marigold) ---------- */
 const cv=$('#petals'), cx=cv.getContext('2d'); let petals=[];
 function size(){ cv.width=innerWidth; cv.height=innerHeight; } size(); addEventListener('resize',size);
@@ -827,10 +843,11 @@ $('#s-submit').onclick=async()=>{
   if(!stillBlob){ toast('Pick a photo of her first'); return; }
   const btn=$('#s-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const id=newId('s');
+    const id=newId('s'); const ownerKey=newOwnerKey();
     const photo_url=await uploadImage(stillBlob,`still_${id}.jpg`);
-    const {error}=await sb.from('her_stills').insert({id,name:$('#s-name').value.trim(),caption:$('#s-caption').value.trim(),photo_url});
+    const {error}=await sb.from('her_stills').insert({id,name:$('#s-name').value.trim(),caption:$('#s-caption').value.trim(),photo_url,owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('her_stills',id,ownerKey);
     stillBlob=null; $('#s-preview').style.display='none'; $('#s-photo').value=''; $('#s-caption').value='';
     burst(60); toast('Added to the gallery'); loadStills();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -841,8 +858,9 @@ async function loadStills(){
   const {data,error}=await sb.from('her_stills').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Gallery is taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No stills yet.</div>'; return; }
-  box.innerHTML=data.map(s=>`<figure><img src="${s.photo_url}" alt="${esc(s.caption||'photo of her')}">${(s.caption||s.name)?`<figcaption>${esc(s.caption||'')}${s.name?`<br><span style="opacity:.7;font-size:.7rem">— ${esc(s.name)}</span>`:''}</figcaption>`:''}</figure>`).join('');
+  box.innerHTML=data.map(s=>`<figure>${delBtn('her_stills',s.id)}<img src="${s.photo_url}" alt="${esc(s.caption||'photo of her')}">${(s.caption||s.name)?`<figcaption>${esc(s.caption||'')}${s.name?`<br><span style="opacity:.7;font-size:.7rem">— ${esc(s.name)}</span>`:''}</figcaption>`:''}</figure>`).join('');
 }
+RELOAD.her_stills=loadStills;
 
 /* =====================================================================
    REEL 2 — BOX OFFICE NUMBERS (submitted)
@@ -852,8 +870,10 @@ $('#n-submit').onclick=async()=>{
   if(!num||!label){ toast('Add a number and what it counts'); return; }
   const btn=$('#n-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('box_numbers').insert({id:newId('n'),num,label,name:$('#n-name').value.trim()});
+    const id=newId('n'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('box_numbers').insert({id,num,label,name:$('#n-name').value.trim(),owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('box_numbers',id,ownerKey);
     $('#n-num').value=''; $('#n-label').value='';
     burst(50); toast('Stat added'); loadNumbers();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -866,10 +886,11 @@ async function loadNumbers(){
   if(error||!data) return;
   data.forEach(s=>{
     const d=document.createElement('div'); d.className='stat mine';
-    d.innerHTML=`<div class="n">${esc(s.num)}</div><div class="l">${esc(s.label)}${s.name?` · ${esc(s.name)}`:''}</div>`;
+    d.innerHTML=`${delBtn('box_numbers',s.id)}<div class="n">${esc(s.num)}</div><div class="l">${esc(s.label)}${s.name?` · ${esc(s.name)}`:''}</div>`;
     grid.appendChild(d);
   });
 }
+RELOAD.box_numbers=loadNumbers;
 
 /* =====================================================================
    REEL 3 — CAST (avatar, wish, clickable cards + modal)
@@ -918,7 +939,7 @@ $('#submitwish').onclick=async()=>{
   if(!name){ toast('Add your name first'); return; }
   $('#submitwish').disabled=true; $('#submitwish').textContent='Saving…';
   try{
-    const id=newId('w');
+    const id=newId('w'); const ownerKey=newOwnerKey();
     let avatar_url=null, photo_urls=[], audio_url=null, clip_url=null;
     if(avatarBlob) avatar_url=await uploadImage(avatarBlob,`av_${id}.jpg`);
     for(let i=0;i<photoBlobs.length;i++) photo_urls.push(await uploadImage(photoBlobs[i],`${id}_${i}.jpg`));
@@ -937,13 +958,11 @@ $('#submitwish').onclick=async()=>{
       id, name, role:$('#w-role').value.trim(), wish:$('#w-wish').value.trim(),
       met_story:$('#w-met').value.trim(), first_impression:$('#w-first').value.trim(), admire:$('#w-admire').value.trim(),
       review:$('#w-review').value.trim(), stars:+$('#w-stars').value, roast:$('#w-roast').value.trim(),
-      flower:$('#w-flower').value.trim(), weather:$('#w-weather').value.trim(),
-      color:$('#w-color').value.trim(), song:$('#w-song').value.trim(),
-      moviechar:$('#w-moviechar').value.trim(), animatedchar:$('#w-animatedchar').value.trim(),
-      video:$('#w-video').value.trim(), avatar_url, photo_urls, audio_url, clip_url
+      video:$('#w-video').value.trim(), avatar_url, photo_urls, audio_url, clip_url, owner_key:ownerKey
     };
     const {error:insErr}=await sb.from('cast_entries').insert(entry);
     if(insErr) throw insErr;
+    saveOwnerKey('cast_entries',id,ownerKey);
     burst(90); toast("You're in the cast");
     $('#wisherform').style.display='none';
     loadCast();
@@ -965,6 +984,7 @@ async function loadCast(){
   if(!CAST.length){ box.innerHTML='<div class="empty">No cast yet. Whoever opens this first, goes first.</div>'; return; }
   box.innerHTML='<div class="cards">'+CAST.map((e,i)=>`
     <div class="card" data-i="${i}">
+      ${delBtn('cast_entries',e.id)}
       <div class="head">
         <img class="av" src="${e.avatar_url||DEFAULT_AV}" alt="">
         <div><div class="who">${esc(e.name)}</div>${e.role?`<div class="billed">${esc(e.role)}</div>`:''}</div>
@@ -976,6 +996,7 @@ async function loadCast(){
     </div>`).join('')+'</div>';
   $$('#cast .card').forEach(c=>c.onclick=()=>openCard(CAST[+c.dataset.i]));
 }
+RELOAD.cast_entries=loadCast;
 function openCard(e){
   const body=`
     <div class="mhead">
@@ -988,19 +1009,11 @@ function openCard(e){
     ${e.first_impression?`<div class="mrow"><b>First impression</b>${esc(e.first_impression)}</div>`:''}
     ${e.admire?`<div class="mrow"><b>One thing I admire</b>${esc(e.admire)}</div>`:''}
     ${e.review?`<div class="mrow"><b>The review</b>${esc(e.review)}</div>`:''}
-    ${e.roast?`<div class="mrow"><b>Never forgetting</b><div class="quip">${esc(e.roast)}</div></div>`:''}
+    ${e.roast?`<div class="mrow"><b>Best memory</b><div class="quip">${esc(e.roast)}</div></div>`:''}
     ${e.photo_urls&&e.photo_urls.length?`<div class="snapgrid">${e.photo_urls.map(u=>`<img src="${u}" alt="">`).join('')}</div>`:''}
     ${e.clip_url?`<video controls src="${e.clip_url}"></video>`:''}
     ${e.audio_url?`<audio controls src="${e.audio_url}"></audio>`:''}
-    ${embedVideo(e.video)}
-    <div class="chips">
-      ${e.flower?`<span class="chip">🌸 ${esc(e.flower)}</span>`:''}
-      ${e.weather?`<span class="chip">☁ ${esc(e.weather)}</span>`:''}
-      ${e.color?`<span class="chip">◉ ${esc(e.color)}</span>`:''}
-      ${e.song?`<span class="chip">♪ ${esc(e.song)}</span>`:''}
-      ${e.moviechar?`<span class="chip">🎬 ${esc(e.moviechar)}</span>`:''}
-      ${e.animatedchar?`<span class="chip">🧸 ${esc(e.animatedchar)}</span>`:''}
-    </div>`;
+    ${embedVideo(e.video)}`;
   openModal(body);
 }
 
@@ -1030,22 +1043,26 @@ function renderPhotoWall(photoUrls,clipUrls){
 }
 
 /* =====================================================================
-   REEL 3½ — TRAIT WALLS (text answers + uploaded photos → collage modal)
+   REEL 3½ — TRAIT WALLS (submitted only from the wall itself — flower,
+   colour, song, character. Every entry lives in trait_photos: rows with
+   no photo render as a word chip, rows with a photo render in the collage.)
 ===================================================================== */
-const TRAITS={flower:'🌸',weather:'☁️',color:'🎨',song:'🎵',moviechar:'🎬',animatedchar:'🧸'};
-const TRAIT_NAMES={flower:'flower',weather:'weather',color:'colour',song:'song',moviechar:'movie character',animatedchar:'animated character'};
-let TRAITDATA={};   // trait -> {words:[{value,name}], photos:[{value,name,photo_url}]}
+const TRAITS={flower:'🌸',color:'🎨',song:'🎵',character:'🎭'};
+const TRAIT_NAMES={flower:'flower',color:'colour',song:'song',character:'movie or animated character'};
+let TRAITDATA={};   // trait -> {words:[trait_photos rows w/o photo], photos:[rows w/ photo]}
 async function loadTraitWalls(){
-  const words={}; Object.keys(TRAITS).forEach(k=>words[k]=[]);
-  CAST.forEach(e=>{ Object.keys(TRAITS).forEach(k=>{ if(e[k]) words[k].push({value:e[k],name:e.name}); }); });
   const {data:tp}=await sb.from('trait_photos').select('*').order('created_at',{ascending:true});
-  const photos={}; Object.keys(TRAITS).forEach(k=>photos[k]=[]);
-  (tp||[]).forEach(p=>{ if(photos[p.trait]) photos[p.trait].push(p); });
-  TRAITDATA={}; Object.keys(TRAITS).forEach(k=>{ TRAITDATA[k]={words:words[k],photos:photos[k]}; });
+  const byTrait={}; Object.keys(TRAITS).forEach(k=>byTrait[k]={words:[],photos:[]});
+  (tp||[]).forEach(p=>{
+    if(!byTrait[p.trait]) return;
+    if(p.photo_url) byTrait[p.trait].photos.push(p);
+    else if(p.value) byTrait[p.trait].words.push(p);
+  });
+  TRAITDATA=byTrait;
   Object.keys(TRAITS).forEach(k=>{
-    const total=words[k].length+photos[k].length;
+    const total=byTrait[k].words.length+byTrait[k].photos.length;
     $('#cnt-'+k).textContent=total?`${total} so far · tap to open`:'be the first · tap to open';
-    const peek=$('#peek-'+k); peek.innerHTML=photos[k].slice(0,4).map(p=>`<img src="${p.photo_url}" alt="">`).join('');
+    const peek=$('#peek-'+k); peek.innerHTML=byTrait[k].photos.slice(0,4).map(p=>`<img src="${p.photo_url}" alt="">`).join('');
   });
 }
 $$('.wallgroup').forEach(g=>g.onclick=()=>openWall(g.dataset.trait));
@@ -1054,15 +1071,15 @@ function openWall(trait){
   const label=TRAIT_NAMES[trait];
   let body=`<div class="mhead"><div><div class="mname">${TRAITS[trait]} The ${label} wall</div>
     <div class="mbilled">If Namrata were a ${label}…</div></div></div>`;
-  if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure><img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` · ${esc(p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
-  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}<i>— ${esc(w.name||'Anonymous')}</i></span>`).join('')}</div>`;
+  if(d.photos.length) body+=`<div class="collage">${d.photos.map(p=>`<figure>${delBtn('trait_photos',p.id,`data-trait="${trait}"`)}<img src="${p.photo_url}" alt="">${(p.value||p.name)?`<figcaption>${esc(p.value||'')}${p.name?` · ${esc(p.name)}`:''}</figcaption>`:''}</figure>`).join('')}</div>`;
+  if(d.words.length) body+=`<div class="cloud">${d.words.map(w=>`<span class="cloudchip">${esc(w.value)}<i>— ${esc(w.name||'Anonymous')}</i>${delBtn('trait_photos',w.id,`data-trait="${trait}" class="delbtn inline"`)}</span>`).join('')}</div>`;
   const canAdd=ROLE!=='diva';
   if(!d.photos.length && !d.words.length) body+=`<p style="opacity:.6;margin-top:16px">${canAdd?'Nothing on this wall yet. Add the first below.':'Nothing on this wall yet.'}</p>`;
   if(canAdd) body+=`
     <div class="miniform" style="margin-top:22px">
       <div class="eyebrow">Add to the ${label} wall</div>
       <label for="tw-value">The ${label} you think she is</label>
-      <input id="tw-value" placeholder="${trait==='flower'?'marigold':trait==='weather'?'a warm monsoon':trait==='color'?'fuchsia':trait==='moviechar'?'the lead in a rom-com':trait==='animatedchar'?'a chaotic Disney princess':'her entrance song'}">
+      <input id="tw-value" placeholder="${trait==='flower'?'marigold':trait==='color'?'fuchsia':trait==='character'?'the lead in a rom-com, or a chaotic Disney princess':'her entrance song'}">
       <label for="tw-photo">A photo of it <span style="opacity:.5;text-transform:none;letter-spacing:0">(optional)</span></label>
       <input type="file" id="tw-photo" accept="image/*">
       <label for="tw-name">Your name</label>
@@ -1078,25 +1095,28 @@ function openWall(trait){
     if(!value && !twBlob){ toast('Add a word or a photo'); return; }
     const btn=$('#tw-submit'); btn.disabled=true; btn.textContent='Saving…';
     try{
-      const id=newId('t'); let photo_url=null;
+      const id=newId('t'); const ownerKey=newOwnerKey(); let photo_url=null;
       if(twBlob) photo_url=await uploadImage(twBlob,`trait_${id}.jpg`);
-      const {error}=await sb.from('trait_photos').insert({id,trait,value,name:$('#tw-name').value.trim(),photo_url});
+      const {error}=await sb.from('trait_photos').insert({id,trait,value,name:$('#tw-name').value.trim(),photo_url,owner_key:ownerKey});
       if(error) throw error;
+      saveOwnerKey('trait_photos',id,ownerKey);
       burst(50); toast('Added to the wall'); await loadTraitWalls(); openWall(trait);
     }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); btn.disabled=false; btn.textContent='Add to wall'; }
   };
 }
 
 /* =====================================================================
-   REEL 4 — ICONIC DIALOGUES
+   REEL 4 — ICONIC DIALOGUES (tap ▾ to reveal who wrote it)
 ===================================================================== */
 $('#d-submit').onclick=async()=>{
   const line=$('#d-line').value.trim();
   if(!line){ toast('Type a line she always says'); return; }
   const btn=$('#d-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('dialogues').insert({id:newId('d'),line,name:$('#d-name').value.trim()});
+    const id=newId('d'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('dialogues').insert({id,line,name:$('#d-name').value.trim(),owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('dialogues',id,ownerKey);
     $('#d-line').value=''; burst(50); toast('Immortalised'); loadDialogues();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
   btn.disabled=false; btn.textContent='Immortalise it';
@@ -1106,8 +1126,20 @@ async function loadDialogues(){
   const {data,error}=await sb.from('dialogues').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No dialogues yet.</div>'; return; }
-  box.innerHTML=data.map(d=>`<div class="bubble"><div class="quote">${esc(d.line)}”</div>${d.name?`<div class="attrib">Filed by ${esc(d.name)}</div>`:''}</div>`).join('');
+  box.innerHTML=data.map(d=>`
+    <div class="bubble">
+      ${delBtn('dialogues',d.id)}
+      <div class="quote">${esc(d.line)}”</div>
+      ${d.name?`<button class="revealbtn" type="button">▾ who said this</button><div class="attrib" style="display:none">Filed by ${esc(d.name)}</div>`:''}
+    </div>`).join('');
+  box.querySelectorAll('.revealbtn').forEach(b=>b.onclick=()=>{
+    const wrap=b.nextElementSibling;
+    const isOpen=wrap.style.display==='block';
+    wrap.style.display=isOpen?'none':'block';
+    b.textContent=(isOpen?'▾':'▴')+' who said this';
+  });
 }
+RELOAD.dialogues=loadDialogues;
 
 /* =====================================================================
    REEL 4½ — COLLABORATIVE PLAYLIST
@@ -1117,8 +1149,10 @@ $('#p-submit').onclick=async()=>{
   if(!url){ toast('Paste a song link first'); return; }
   const btn=$('#p-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('playlist_songs').insert({id:newId('p'),url,note:$('#p-note').value.trim(),name:$('#p-name').value.trim()});
+    const id=newId('p'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('playlist_songs').insert({id,url,note:$('#p-note').value.trim(),name:$('#p-name').value.trim(),owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('playlist_songs',id,ownerKey);
     $('#p-url').value=''; $('#p-note').value='';
     burst(50); toast('Added to the soundtrack'); loadPlaylist();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1131,11 +1165,13 @@ async function loadPlaylist(){
   if(!data||!data.length){ box.innerHTML='<div class="empty">No songs yet. Add the first track.</div>'; return; }
   box.innerHTML=data.map(s=>`
     <div class="songcard">
+      ${delBtn('playlist_songs',s.id)}
       ${embedSong(s.url)}
       ${s.note?`<div class="note">"${esc(s.note)}"</div>`:''}
       ${s.name?`<div class="who">Added by ${esc(s.name)}</div>`:''}
     </div>`).join('');
 }
+RELOAD.playlist_songs=loadPlaylist;
 
 /* =====================================================================
    REEL 5 — RIDDLES (submit → vote → Namrata reveals the true answer)
@@ -1149,8 +1185,10 @@ $('#r-submit').onclick=async()=>{
   if(!question||options.some(o=>!o)){ toast('Fill in the riddle and all four options'); return; }
   const btn=$('#r-submit'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const {error}=await sb.from('riddles').insert({id:newId('r'),question,options,answer:null,name:$('#r-name').value.trim()});
+    const id=newId('r'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('riddles').insert({id,question,options,answer:null,name:$('#r-name').value.trim(),owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('riddles',id,ownerKey);
     $('#r-q').value=''; $('#r-opt0').value=''; $('#r-opt1').value=''; $('#r-opt2').value=''; $('#r-opt3').value='';
     burst(50); toast('Riddle added — people can start voting'); loadRiddles();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1197,6 +1235,7 @@ async function loadRiddles(){
     else if(votedRiddles.has(r.id)) below=`<div class="verdict pending">Thanks — your vote is in. Namrata will reveal the answer soon.</div>`;
     return `
     <div class="riddle" data-riddle="${r.id}" data-i="${i}">
+      ${delBtn('riddles',r.id)}
       <h4>${esc(r.question)}</h4>
       ${r.name?`<div class="by">Set by ${esc(r.name)}</div>`:''}
       ${needsNameInput?`<input class="votename" placeholder="Your name (optional)">`:''}
@@ -1228,6 +1267,7 @@ async function loadRiddles(){
     });
   });
 }
+RELOAD.riddles=loadRiddles;
 
 /* =====================================================================
    REEL 5½ — ANONYMOUS COMPLIMENTS
@@ -1237,8 +1277,10 @@ $('#c-submit').onclick=async()=>{
   if(!text){ toast('Write something first'); return; }
   const btn=$('#c-submit'); btn.disabled=true; btn.textContent='Posting…';
   try{
-    const {error}=await sb.from('compliments').insert({id:newId('c'),text});
+    const id=newId('c'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('compliments').insert({id,text,owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('compliments',id,ownerKey);
     $('#c-text').value='';
     burst(50); toast('Posted anonymously'); loadCompliments();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1249,8 +1291,9 @@ async function loadCompliments(){
   const {data,error}=await sb.from('compliments').select('*').order('created_at',{ascending:true});
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">No compliments yet. Be the first, anonymously.</div>'; return; }
-  box.innerHTML=data.map(c=>`<div class="stickynote">${esc(c.text)}</div>`).join('');
+  box.innerHTML=data.map(c=>`<div class="stickynote">${delBtn('compliments',c.id)}${esc(c.text)}</div>`).join('');
 }
+RELOAD.compliments=loadCompliments;
 
 /* =====================================================================
    REEL 6 — TIME CAPSULE (locked until next birthday, for everyone)
@@ -1260,8 +1303,10 @@ $('#cap-submit').onclick=async()=>{
   if(!note){ toast('Write a note first'); return; }
   const btn=$('#cap-submit'); btn.disabled=true; btn.textContent='Sealing…';
   try{
-    const {error}=await sb.from('time_capsule').insert({id:newId('cap'),name:$('#cap-name').value.trim(),note});
+    const id=newId('cap'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('time_capsule').insert({id,name:$('#cap-name').value.trim(),note,owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('time_capsule',id,ownerKey);
     $('#cap-note').value=''; $('#cap-name').value='';
     burst(60); toast('Sealed away for next year');
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1289,8 +1334,9 @@ async function loadCapsule(){
   if(error){ box.innerHTML='<div class="empty">Taking a moment. Refresh to try again.</div>'; return; }
   if(!data||!data.length){ box.innerHTML='<div class="empty">The capsule opened — but nobody left anything.</div>'; return; }
   box.innerHTML=`<div class="capsule-open"><div class="capheader">Opened at last. Here's what was waiting.</div>`+
-    data.map(c=>`<div class="capnote">${esc(c.note)}${c.name?`<div class="capwho">— ${esc(c.name)}</div>`:''}</div>`).join('')+`</div>`;
+    data.map(c=>`<div class="capnote">${delBtn('time_capsule',c.id)}${esc(c.note)}${c.name?`<div class="capwho">— ${esc(c.name)}</div>`:''}</div>`).join('')+`</div>`;
 }
+RELOAD.time_capsule=loadCapsule;
 
 /* =====================================================================
    REEL 6½ — SHARED BUCKET LIST (open to everyone, including her)
@@ -1300,8 +1346,10 @@ $('#b-submit').onclick=async()=>{
   if(!item){ toast('Add a thing to do first'); return; }
   const btn=$('#b-submit'); btn.disabled=true; btn.textContent='Adding…';
   try{
-    const {error}=await sb.from('bucket_list').insert({id:newId('b'),item,name:$('#b-name').value.trim(),done:false});
+    const id=newId('b'); const ownerKey=newOwnerKey();
+    const {error}=await sb.from('bucket_list').insert({id,item,name:$('#b-name').value.trim(),done:false,owner_key:ownerKey});
     if(error) throw error;
+    saveOwnerKey('bucket_list',id,ownerKey);
     $('#b-item').value='';
     burst(50); toast('Added to the list'); loadBucketList();
   }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
@@ -1314,6 +1362,7 @@ async function loadBucketList(){
   if(!data||!data.length){ box.innerHTML='<div class="empty">Nothing on the list yet. Add the first thing.</div>'; return; }
   box.innerHTML=data.map((b,i)=>`
     <div class="bucketitem${b.done?' done':''}" data-i="${i}">
+      ${delBtn('bucket_list',b.id)}
       <div class="box">${b.done?'✓':''}</div>
       <div class="txt">${esc(b.item)}${b.name?`<div class="who">Added by ${esc(b.name)}</div>`:''}</div>
     </div>`).join('');
@@ -1327,6 +1376,7 @@ async function loadBucketList(){
     }catch(e){ console.error(e); toast('Error: '+(e.message||e.hint||JSON.stringify(e))); }
   });
 }
+RELOAD.bucket_list=loadBucketList;
 
 /* ---------- konami → blooper ---------- */
 const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];

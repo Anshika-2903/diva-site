@@ -370,7 +370,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
         Starring <b>Namrata</b> as herself<br>
         With everyone who showed up tonight<br>
         Screenplay by <b>Life</b> · Chaos by <b>Namrata</b><br>
-        Released <b>[BIRTHDAY DATE]</b>
+        Released <b>29 July 2003</b>
       </div>
     </header>
   </div>
@@ -717,29 +717,18 @@ document.addEventListener('click', e=>{
 /* ---------- petals (confetti, but marigold) ---------- */
 const cv=$('#petals'), cx=cv.getContext('2d'); let petals=[];
 function size(){ cv.width=innerWidth; cv.height=innerHeight; } size(); addEventListener('resize',size);
-function burst(n=60,emojis){
+function burst(n=60){
   if(reduce) return;
-  for(let i=0;i<n;i++){
-    const p={x:Math.random()*cv.width,y:-20-Math.random()*200,r:4+Math.random()*7,
-      s:1+Math.random()*2.4,a:Math.random()*6.28,va:(Math.random()-.5)*.12,
-      c:['#F5A623','#D6246E','#E8C87A','#FDF4E3'][Math.floor(Math.random()*4)]};
-    if(emojis&&emojis.length){ p.emoji=emojis[Math.floor(Math.random()*emojis.length)]; p.r=9+Math.random()*9; }
-    petals.push(p);
-  }
-}
-/* a bigger, cuter celebration for the candle-blow moment: confetti + flowers/hearts/sparkles */
-function bigBurst(){
-  burst(90);
-  burst(70,['🌸','🎉','💛','✨','🎊','💖']);
+  for(let i=0;i<n;i++) petals.push({x:Math.random()*cv.width,y:-20-Math.random()*200,r:4+Math.random()*7,
+    s:1+Math.random()*2.4,a:Math.random()*6.28,va:(Math.random()-.5)*.12,
+    c:['#F5A623','#D6246E','#E8C87A','#FDF4E3'][Math.floor(Math.random()*4)]});
 }
 function loop(){
   cx.clearRect(0,0,cv.width,cv.height);
   petals=petals.filter(p=>p.y<cv.height+30);
   petals.forEach(p=>{ p.y+=p.s; p.x+=Math.sin(p.y/40)*.7; p.a+=p.va;
-    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
-    if(p.emoji){ cx.font=(p.r*2)+'px sans-serif'; cx.textAlign='center'; cx.textBaseline='middle'; cx.globalAlpha=.92; cx.fillText(p.emoji,0,0); }
-    else{ cx.fillStyle=p.c; cx.globalAlpha=.85; cx.beginPath(); cx.ellipse(0,0,p.r,p.r*.55,0,0,6.28); cx.fill(); }
-    cx.restore(); });
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a); cx.fillStyle=p.c; cx.globalAlpha=.85;
+    cx.beginPath(); cx.ellipse(0,0,p.r,p.r*.55,0,0,6.28); cx.fill(); cx.restore(); });
   requestAnimationFrame(loop);
 } loop();
 
@@ -801,7 +790,7 @@ async function enterFilm(){
     await showBirthdayCollage((data||[]).map(e=>e.clip_url));
   }
   $('#film').style.display='block';
-  bigBurst();
+  burst(60);
   $$('.chapter').forEach(c=>c.classList.add('open'));
   const isWisher=ROLE==='wisher';
   ['stillform','numform','wisherform','dlgform','playlistform','riddleform','complimentform','capsuleform'].forEach(id=>{
@@ -1118,7 +1107,7 @@ function showBirthdayCollage(clipUrls){
     wall.innerHTML=`<div class="bdaytitle">Happy birthday, Namrata! 🎂</div>
       <div class="bdaygrid">${clips.slice(0,9).map(u=>`<video src="${u}" playsinline></video>`).join('')}</div>`;
     wall.style.display='flex';
-    bigBurst();
+    burst(60);
     const vids=$$('#bdaycollage video');
     vids.forEach(v=>{ v.muted=false; v.volume=0.85; v.loop=true; v.play().catch(()=>{}); });
     setTimeout(()=>{

@@ -271,6 +271,11 @@ label{font-family:var(--cond);font-size:.7rem;letter-spacing:.18em;text-transfor
 .riddle .divehint{font-family:var(--cond);letter-spacing:.1em;text-transform:uppercase;font-size:.66rem;color:var(--gold);opacity:.8;margin-bottom:10px}
 
 /* letter */
+.credits-roll{max-width:420px;margin:0 auto;text-align:left}
+.creditrow{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dotted rgba(232,200,122,.2)}
+.creditrow .cname{font-family:var(--cond);font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-size:.76rem;color:var(--cream);white-space:nowrap}
+.creditrow .cdots{flex:1;border-bottom:1px dotted rgba(232,200,122,.35);transform:translateY(-5px)}
+.creditrow .crole{font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:.76rem;color:var(--marigold);white-space:nowrap;text-align:right}
 #letter{min-height:220px;font-size:1.05rem;white-space:pre-wrap;max-width:52ch;margin:30px auto 0;text-align:left;font-family:var(--serif)}
 #letter::after{content:"▌";color:var(--magenta);animation:blink .7s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -622,6 +627,7 @@ footer{padding:50px 0 90px;text-align:center;font-family:var(--cond);letter-spac
   <section class="chapter" id="ch8"><div class="wrap" style="text-align:center">
     <div class="eyebrow">Last reel</div>
     <h2 class="reel">The <em>end</em> credits</h2>
+    <div class="credits-roll" id="creditsroll"></div>
     <div id="letter"></div>
   </div></section>
 
@@ -993,6 +999,7 @@ async function loadCast(){
   if(error){ box.innerHTML='<div class="empty">Cast list is taking a moment. Refresh to try again.</div>'; return; }
   CAST=entries||[];
   renderPhotoWall(CAST.flatMap(e=>e.photo_urls||[]));
+  renderCredits();
   loadTraitWalls();
   if(!CAST.length){ box.innerHTML='<div class="empty">No cast yet. Whoever opens this first, goes first.</div>'; return; }
   box.innerHTML='<div class="cards">'+CAST.map((e,i)=>`
@@ -1037,18 +1044,41 @@ $('#modal').querySelector('.x').onclick=closeModal;
 $('#modal').onclick=e=>{ if(e.target.id==='modal') closeModal(); };
 addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
-/* ---------- ambient photo + video wall ---------- */
-function placeInWall(el,w){
-  el.style.width=w+'px'; el.style.height=(w*1.2)+'px';
-  el.style.left=(Math.random()*90)+'%'; el.style.top=(Math.random()*90)+'%';
-  el.style.transform=`rotate(${(Math.random()*24-12).toFixed(1)}deg)`;
-}
+/* ---------- ambient photo wall: an even grid across the frame, sized to the count ---------- */
 function renderPhotoWall(photoUrls){
   const wall=$('#photowall'); wall.innerHTML='';
-  photoUrls.filter(Boolean).slice(0,14).forEach(u=>{
+  const urls=photoUrls.filter(Boolean).slice(0,24);
+  if(!urls.length) return;
+  const vw=innerWidth||1200, vh=innerHeight||800;
+  const cols=Math.max(1,Math.round(Math.sqrt(urls.length*(vw/vh))));
+  const rows=Math.ceil(urls.length/cols);
+  const cellW=100/cols, cellH=100/rows;
+  const baseSize=Math.max(80,Math.min(220,260-urls.length*7));
+  urls.forEach((u,i)=>{
     const img=document.createElement('img'); img.src=u; img.loading='lazy'; img.alt='';
-    placeInWall(img,140+Math.random()*90); wall.appendChild(img);
+    const col=i%cols, row=Math.floor(i/cols);
+    const jitterX=(Math.random()-0.5)*cellW*0.4;
+    const jitterY=(Math.random()-0.5)*cellH*0.4;
+    const cx=col*cellW+cellW/2+jitterX, cy=row*cellH+cellH/2+jitterY;
+    const w=baseSize+Math.random()*24;
+    img.style.width=w+'px'; img.style.height=(w*1.2)+'px';
+    img.style.left=`calc(${cx}% - ${w/2}px)`;
+    img.style.top=`calc(${cy}% - ${w*0.6}px)`;
+    img.style.transform=`rotate(${(Math.random()*14-7).toFixed(1)}deg)`;
+    wall.appendChild(img);
   });
+}
+
+/* ---------- end credits: cast, billed as whatever they're known as to her ---------- */
+function renderCredits(){
+  const box=$('#creditsroll'); if(!box) return;
+  if(!CAST.length){ box.innerHTML=''; return; }
+  box.innerHTML=CAST.map(e=>`
+    <div class="creditrow">
+      <span class="cname">${esc(e.name)}</span>
+      <span class="cdots"></span>
+      <span class="crole">${esc(e.role||'Friend')}</span>
+    </div>`).join('');
 }
 
 /* ---------- her entrance: video wishes play once, with sound ---------- */

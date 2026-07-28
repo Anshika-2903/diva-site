@@ -824,14 +824,19 @@ $$('[data-unlock]').forEach(b=>b.onclick=()=>{
 
 /* ---------- image compress → blob + dataURL ---------- */
 function compress(file,max=900){
-  return new Promise(res=>{
+  return new Promise((res,rej)=>{
     const r=new FileReader();
-    r.onload=()=>{ const img=new Image(); img.onload=()=>{
-      const sc=Math.min(1,max/Math.max(img.width,img.height));
-      const c=document.createElement('canvas'); c.width=img.width*sc; c.height=img.height*sc;
-      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      c.toBlob(blob=>res({blob,dataUrl:c.toDataURL('image/jpeg',.72)}),'image/jpeg',.72);
-    }; img.src=r.result; };
+    r.onload=()=>{ const img=new Image();
+      img.onload=()=>{
+        const sc=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement('canvas'); c.width=img.width*sc; c.height=img.height*sc;
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        c.toBlob(blob=>res({blob,dataUrl:c.toDataURL('image/jpeg',.72)}),'image/jpeg',.72);
+      };
+      img.onerror=()=>rej(new Error('unsupported image format'));
+      img.src=r.result;
+    };
+    r.onerror=()=>rej(new Error('could not read file'));
     r.readAsDataURL(file);
   });
 }
@@ -866,8 +871,10 @@ function embedSong(url){
 let stillBlob=null;
 $('#s-photo').onchange=async e=>{
   const f=e.target.files[0]; if(!f) return;
-  const {blob,dataUrl}=await compress(f);
-  stillBlob=blob; $('#s-preview').src=dataUrl; $('#s-preview').style.display='block';
+  try{
+    const {blob,dataUrl}=await compress(f);
+    stillBlob=blob; $('#s-preview').src=dataUrl; $('#s-preview').style.display='block';
+  }catch(err){ toast("Couldn't read that photo — try a JPG or PNG instead"); }
 };
 $('#s-submit').onclick=async()=>{
   if(!stillBlob){ toast('Pick a photo of her first'); return; }
@@ -928,14 +935,22 @@ RELOAD.box_numbers=loadNumbers;
 let avatarBlob=null, photoBlobs=[], clipBlob=null;
 $('#w-avatar').onchange=async e=>{
   const f=e.target.files[0]; if(!f) return;
-  const {blob,dataUrl}=await compress(f,400);
-  avatarBlob=blob; $('#w-av-preview').src=dataUrl; $('#w-av-preview').style.display='block';
+  try{
+    const {blob,dataUrl}=await compress(f,400);
+    avatarBlob=blob; $('#w-av-preview').src=dataUrl; $('#w-av-preview').style.display='block';
+  }catch(err){ toast("Couldn't read that photo — try a JPG or PNG instead"); }
 };
 $('#w-photo').onchange=async e=>{
   const files=[...e.target.files]; if(!files.length) return;
   photoBlobs=[]; const grid=$('#w-preview-grid'); grid.innerHTML=''; grid.style.display='grid';
-  for(const f of files){ const {blob,dataUrl}=await compress(f); photoBlobs.push(blob);
-    const img=document.createElement('img'); img.src=dataUrl; grid.appendChild(img); }
+  let skipped=0;
+  for(const f of files){
+    try{
+      const {blob,dataUrl}=await compress(f); photoBlobs.push(blob);
+      const img=document.createElement('img'); img.src=dataUrl; grid.appendChild(img);
+    }catch(err){ skipped++; }
+  }
+  if(skipped) toast(`${skipped} photo${skipped>1?'s':''} couldn't be added — try JPG or PNG instead (iPhone HEIC photos often don't work)`);
 };
 $('#w-clip').onchange=e=>{
   const f=e.target.files[0]; if(!f) return;
@@ -1159,7 +1174,11 @@ function openWall(trait){
   openModal(body);
   if(!canAdd) return;
   let twBlob=null;
-  $('#tw-photo').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const {blob}=await compress(f); twBlob=blob; };
+  $('#tw-photo').onchange=async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    try{ const {blob}=await compress(f); twBlob=blob; }
+    catch(err){ toast("Couldn't read that photo — try a JPG or PNG instead"); }
+  };
   $('#tw-submit').onclick=async()=>{
     const value=$('#tw-value').value.trim();
     if(!value && !twBlob){ toast('Add a word or a photo'); return; }
